@@ -24,10 +24,10 @@ public class OfferController {
     }
 
     @PostMapping
-    OfferDto updateOffer(@RequestBody OfferDto offerDto) {return offerService.create(offerDto);}
+    OfferDto createOffer(@RequestBody OfferDto offerDto) {return offerService.create(offerDto);}
 
     @PutMapping
-    OfferDto newOffer(@RequestBody OfferDto offerDto) {return offerService.create(offerDto);}
+    OfferDto updateOffer(@RequestBody OfferDto offerDto) {return offerService.create(offerDto);}
 
     @DeleteMapping("/{id}")
     void deleteOffer(@PathVariable UUID id) {offerService.deleteById(id);}

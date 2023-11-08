@@ -24,10 +24,10 @@ public class BrandController {
     }
 
     @PostMapping
-    BrandDto updateBrand(@RequestBody BrandDto brandDto) {return brandService.create(brandDto);}
+    BrandDto createBrand(@RequestBody BrandDto brandDto) {return brandService.create(brandDto);}
 
     @PutMapping
-    BrandDto newBrand(@RequestBody BrandDto brandDto) {return brandService.create(brandDto);}
+    BrandDto updateBrand(@RequestBody BrandDto brandDto) {return brandService.create(brandDto);}
 
     @DeleteMapping("/{id}")
     void deleteBrand(@PathVariable UUID id) {brandService.deleteById(id);}

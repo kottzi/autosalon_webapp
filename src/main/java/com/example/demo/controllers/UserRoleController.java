@@ -24,10 +24,10 @@ public class UserRoleController {
     }
 
     @PostMapping
-    UserRoleDto updateRole(@RequestBody UserRoleDto roleDto) {return roleService.create(roleDto);}
+    UserRoleDto createRole(@RequestBody UserRoleDto roleDto) {return roleService.create(roleDto);}
 
     @PutMapping
-    UserRoleDto newRole(@RequestBody UserRoleDto roleDto) {return roleService.create(roleDto);}
+    UserRoleDto updateRole(@RequestBody UserRoleDto roleDto) {return roleService.create(roleDto);}
 
     @DeleteMapping("/{id}")
     void deleteRole(@PathVariable UUID id) {roleService.deleteById(id);}
