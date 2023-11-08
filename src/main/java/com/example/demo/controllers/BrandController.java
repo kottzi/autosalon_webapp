@@ -6,6 +6,7 @@ import com.example.demo.services.BrandService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
 import java.util.UUID;
 
 @RestController
@@ -16,7 +17,7 @@ public class BrandController {
     public void setBrandService(BrandService brandService) {this.brandService = brandService;}
 
     @GetMapping
-    Iterable<BrandDto> all() {return brandService.getAll();}
+    List<BrandDto> all() {return brandService.getAll();}
 
     @GetMapping("/{id}")
     BrandDto one(@PathVariable UUID id) throws Throwable {

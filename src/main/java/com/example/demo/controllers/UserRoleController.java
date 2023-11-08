@@ -6,6 +6,7 @@ import com.example.demo.services.UserRoleService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
 import java.util.UUID;
 
 @RestController
@@ -16,7 +17,7 @@ public class UserRoleController {
     public void setRoleService(UserRoleService roleService) {this.roleService = roleService;}
 
     @GetMapping
-    Iterable<UserRoleDto> all() {return roleService.getAll();}
+    List<UserRoleDto> all() {return roleService.getAll();}
 
     @GetMapping("/{id}")
     UserRoleDto one(@PathVariable UUID id) throws Throwable {

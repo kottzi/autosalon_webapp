@@ -4,6 +4,7 @@ import com.example.demo.services.dtos.OfferDto;
 import com.example.demo.models.Offer;
 import com.example.demo.repositories.OfferRepository;
 import com.example.demo.services.OfferService;
+import com.example.demo.util.ValidationUtil;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -14,10 +15,14 @@ import java.util.UUID;
 import java.util.stream.Collectors;
 @Service
 public class OfferServiceImpl implements OfferService {
-    @Autowired
     OfferRepository offerRepository;
-    @Autowired
-    ModelMapper modelMapper;
+    final ValidationUtil validationUtil;
+    final ModelMapper modelMapper;
+
+    public OfferServiceImpl(ValidationUtil validationUtil, ModelMapper modelMapper) {
+        this.validationUtil = validationUtil;
+        this.modelMapper = modelMapper;
+    }
 
     @Override
     public OfferDto create(OfferDto offerDto) {
@@ -45,9 +50,13 @@ public class OfferServiceImpl implements OfferService {
     public List<OfferDto> getAll() {
         return offerRepository.findAll().stream().map((s) -> modelMapper.map(s, OfferDto.class)).collect(Collectors.toList());
     }
-
     @Override
     public OfferDto findOfferByMileageBetween(int start, int end) {
         return modelMapper.map(offerRepository.findOfferByMileageBetween(start, end), OfferDto.class);
+    }
+
+    @Autowired
+    public void setOfferRepository(OfferRepository offerRepository) {
+        this.offerRepository = offerRepository;
     }
 }

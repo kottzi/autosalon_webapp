@@ -6,6 +6,7 @@ import com.example.demo.services.OfferService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
 import java.util.UUID;
 
 @RestController
@@ -16,7 +17,7 @@ public class OfferController {
     public void setOfferService(OfferService offerService) {this.offerService = offerService;}
 
     @GetMapping
-    Iterable<OfferDto> all() {return offerService.getAll();}
+    List<OfferDto> all() {return offerService.getAll();}
 
     @GetMapping("/{id}")
     OfferDto one(@PathVariable UUID id) throws Throwable {

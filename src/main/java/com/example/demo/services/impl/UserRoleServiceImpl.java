@@ -4,6 +4,7 @@ import com.example.demo.services.dtos.UserRoleDto;
 import com.example.demo.models.UserRole;
 import com.example.demo.repositories.UserRoleRepository;
 import com.example.demo.services.UserRoleService;
+import com.example.demo.util.ValidationUtil;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -14,10 +15,14 @@ import java.util.UUID;
 import java.util.stream.Collectors;
 @Service
 public class UserRoleServiceImpl implements UserRoleService {
-    @Autowired
     UserRoleRepository userRoleRepository;
-    @Autowired
-    ModelMapper modelMapper;
+    final ValidationUtil validationUtil;
+    final ModelMapper modelMapper;
+
+    public UserRoleServiceImpl(ValidationUtil validationUtil, ModelMapper modelMapper) {
+        this.validationUtil = validationUtil;
+        this.modelMapper = modelMapper;
+    }
 
     @Override
     public UserRoleDto create(UserRoleDto UserRoleDto) {
@@ -44,5 +49,10 @@ public class UserRoleServiceImpl implements UserRoleService {
     @Override
     public List<UserRoleDto> getAll() {
         return userRoleRepository.findAll().stream().map((s) -> modelMapper.map(s, UserRoleDto.class)).collect(Collectors.toList());
+    }
+
+    @Autowired
+    public void setUserRoleRepository(UserRoleRepository userRoleRepository) {
+        this.userRoleRepository = userRoleRepository;
     }
 }

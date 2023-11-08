@@ -4,6 +4,7 @@ import com.example.demo.services.dtos.BrandDto;
 import com.example.demo.models.Brand;
 import com.example.demo.repositories.BrandRepository;
 import com.example.demo.services.BrandService;
+import com.example.demo.util.ValidationUtil;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -16,10 +17,14 @@ import java.util.stream.Collectors;
 
 @Service
 public class BrandServiceImpl implements BrandService {
-    @Autowired
     BrandRepository brandRepository;
-    @Autowired
-    ModelMapper modelMapper;
+    final ValidationUtil validationUtil;
+    final ModelMapper modelMapper;
+
+    public BrandServiceImpl(ValidationUtil validationUtil, ModelMapper modelMapper) {
+        this.validationUtil = validationUtil;
+        this.modelMapper = modelMapper;
+    }
 
     @Override
     public BrandDto create(BrandDto brandDto) {
@@ -47,9 +52,13 @@ public class BrandServiceImpl implements BrandService {
     public List<BrandDto> getAll() {
         return brandRepository.findAll().stream().map((s) -> modelMapper.map(s, BrandDto.class)).collect(Collectors.toList());
     }
-
     @Override
     public BrandDto findBrandByCreated(LocalDate created) {
         return modelMapper.map(brandRepository.findBrandByCreated(created), BrandDto.class);
+    }
+
+    @Autowired
+    public void setBrandRepository(BrandRepository brandRepository) {
+        this.brandRepository = brandRepository;
     }
 }

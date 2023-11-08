@@ -6,6 +6,7 @@ import com.example.demo.services.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
 import java.util.UUID;
 
 @RestController
@@ -16,7 +17,7 @@ public class UserController {
     public void setUserService(UserService userService) {this.userService = userService;}
 
     @GetMapping
-    Iterable<UserDto> all() {return userService.getAll();}
+    List<UserDto> all() {return userService.getAll();}
 
     @GetMapping("/{id}")
     UserDto one(@PathVariable UUID id) throws Throwable {

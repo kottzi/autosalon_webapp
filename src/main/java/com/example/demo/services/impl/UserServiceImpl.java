@@ -4,6 +4,7 @@ import com.example.demo.services.dtos.UserDto;
 import com.example.demo.models.User;
 import com.example.demo.repositories.UserRepository;
 import com.example.demo.services.UserService;
+import com.example.demo.util.ValidationUtil;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -14,10 +15,14 @@ import java.util.UUID;
 import java.util.stream.Collectors;
 @Service
 public class UserServiceImpl implements UserService {
-    @Autowired
     UserRepository userRepository;
-    @Autowired
-    ModelMapper modelMapper;
+    final ValidationUtil validationUtil;
+    final ModelMapper modelMapper;
+
+    public UserServiceImpl(ValidationUtil validationUtil, ModelMapper modelMapper) {
+        this.validationUtil = validationUtil;
+        this.modelMapper = modelMapper;
+    }
 
     @Override
     public UserDto create(UserDto userDto) {
@@ -45,9 +50,13 @@ public class UserServiceImpl implements UserService {
     public List<UserDto> getAll() {
         return userRepository.findAll().stream().map((s) -> modelMapper.map(s, UserDto.class)).collect(Collectors.toList());
     }
-
     @Override
     public UserDto findUserByUsername(String username) {
         return modelMapper.map(userRepository.findUserByUsername(username), UserDto.class);
+    }
+
+    @Autowired
+    public void setUserRepository(UserRepository userRepository) {
+        this.userRepository = userRepository;
     }
 }
