@@ -24,6 +24,9 @@ public class BrandController {
     }
 
     @PostMapping
+    BrandDto updateBrand(@RequestBody BrandDto brandDto) {return brandService.create(brandDto);}
+
+    @PutMapping
     BrandDto newBrand(@RequestBody BrandDto brandDto) {return brandService.create(brandDto);}
 
     @DeleteMapping("/{id}")

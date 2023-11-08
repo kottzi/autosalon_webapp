@@ -27,6 +27,11 @@ public class BrandServiceImpl implements BrandService {
         return modelMapper.map(brandRepository.save(s), BrandDto.class);
     }
     @Override
+    public BrandDto addBrand(BrandDto brandDto) {
+        Brand s = modelMapper.map(brandDto, Brand.class);
+        return modelMapper.map(brandRepository.save(s), BrandDto.class);
+    }
+    @Override
     public void delete(BrandDto brandDto) {
         brandRepository.deleteById(brandDto.getId());
     }

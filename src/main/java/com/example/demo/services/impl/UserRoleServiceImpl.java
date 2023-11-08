@@ -25,6 +25,11 @@ public class UserRoleServiceImpl implements UserRoleService {
         return modelMapper.map(userRoleRepository.save(s), UserRoleDto.class);
     }
     @Override
+    public UserRoleDto addUserRole(UserRoleDto UserRoleDto) {
+        UserRole s = modelMapper.map(UserRoleDto, UserRole.class);
+        return modelMapper.map(userRoleRepository.save(s), UserRoleDto.class);
+    }
+    @Override
     public void delete(UserRoleDto UserRoleDto) {
         userRoleRepository.deleteById(UserRoleDto.getId());
     }

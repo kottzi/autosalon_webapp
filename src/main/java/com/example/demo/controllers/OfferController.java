@@ -24,6 +24,9 @@ public class OfferController {
     }
 
     @PostMapping
+    OfferDto updateOffer(@RequestBody OfferDto offerDto) {return offerService.create(offerDto);}
+
+    @PutMapping
     OfferDto newOffer(@RequestBody OfferDto offerDto) {return offerService.create(offerDto);}
 
     @DeleteMapping("/{id}")

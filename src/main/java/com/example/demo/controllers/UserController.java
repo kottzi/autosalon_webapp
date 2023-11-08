@@ -24,6 +24,9 @@ public class UserController {
     }
 
     @PostMapping
+    UserDto updateUser(@RequestBody UserDto userDto) {return userService.create(userDto);}
+
+    @PutMapping
     UserDto newUser(@RequestBody UserDto userDto) {return userService.create(userDto);}
 
     @DeleteMapping("/{id}")

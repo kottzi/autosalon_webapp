@@ -8,6 +8,7 @@ import java.util.UUID;
 
 public interface UserRoleService {
     UserRoleDto create(UserRoleDto userRoleDto);
+    UserRoleDto addUserRole(UserRoleDto userRoleDto);
     void delete(UserRoleDto userRoleDto);
     void deleteById(UUID id);
     Optional<UserRoleDto> findById(UUID id);

@@ -9,6 +9,7 @@ import java.util.UUID;
 
 public interface BrandService {
     BrandDto create(BrandDto brandDto);
+    BrandDto addBrand(BrandDto brandDto);
     void delete(BrandDto brandDto);
     void deleteById(UUID id);
     Optional<BrandDto> findById(UUID id);

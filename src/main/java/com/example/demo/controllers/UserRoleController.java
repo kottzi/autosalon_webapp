@@ -24,6 +24,9 @@ public class UserRoleController {
     }
 
     @PostMapping
+    UserRoleDto updateRole(@RequestBody UserRoleDto roleDto) {return roleService.create(roleDto);}
+
+    @PutMapping
     UserRoleDto newRole(@RequestBody UserRoleDto roleDto) {return roleService.create(roleDto);}
 
     @DeleteMapping("/{id}")

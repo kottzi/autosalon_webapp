@@ -10,6 +10,7 @@ import java.util.UUID;
 
 public interface ModelService {
     ModelDto create(ModelDto modelDto);
+    ModelDto addModel(ModelDto modelDto);
     void delete(ModelDto modelDto);
     void deleteById(UUID id);
     Optional<ModelDto> findById(UUID id);

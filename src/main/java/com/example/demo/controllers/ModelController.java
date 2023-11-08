@@ -24,6 +24,9 @@ public class ModelController {
     }
 
     @PostMapping
+    ModelDto updateModel(@RequestBody ModelDto modelDto) {return modelService.create(modelDto);}
+
+    @PutMapping
     ModelDto newModel(@RequestBody ModelDto modelDto) {return modelService.create(modelDto);}
 
     @DeleteMapping("/{id}")

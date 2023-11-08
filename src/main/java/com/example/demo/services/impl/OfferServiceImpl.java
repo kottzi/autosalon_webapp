@@ -25,6 +25,11 @@ public class OfferServiceImpl implements OfferService {
         return modelMapper.map(offerRepository.save(s), OfferDto.class);
     }
     @Override
+    public OfferDto addOffer(OfferDto offerDto) {
+        Offer s = modelMapper.map(offerDto, Offer.class);
+        return modelMapper.map(offerRepository.save(s), OfferDto.class);
+    }
+    @Override
     public void delete(OfferDto offerDto) {
         offerRepository.deleteById(offerDto.getId());
     }

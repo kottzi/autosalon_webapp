@@ -9,6 +9,7 @@ import java.util.UUID;
 
 public interface OfferService {
     OfferDto create(OfferDto offerDto);
+    OfferDto addOffer(OfferDto offerDto);
     void delete(OfferDto offerDto);
     void deleteById(UUID id);
     Optional<OfferDto> findById(UUID id);

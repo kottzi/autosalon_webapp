@@ -25,6 +25,11 @@ public class ModelServiceImpl implements ModelService {
         return modelMapper.map(modelRepository.save(s), ModelDto.class);
     }
     @Override
+    public ModelDto addModel(ModelDto modelDto) {
+        Model s = modelMapper.map(modelDto, Model.class);
+        return modelMapper.map(modelRepository.save(s), ModelDto.class);
+    }
+    @Override
     public void delete(ModelDto modelDto) {
         modelRepository.deleteById(modelDto.getId());
     }
