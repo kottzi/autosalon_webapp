@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="ru" class="h-100" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+
+<head th:replace="fragments/head">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+</head>
+
+<body class="d-flex flex-column h-100">
+<div th:replace="fragments/navbar">NAVIGATION</div>
+
+<main>
+    <div class="text-center align-items-center justify-content-center">
+        <div class="container">
+            <h1>
+                Все предложения
+            </h1>
+            <div th:each="offer: ${showOffers}">
+                <div>
+                    <span th:text="${offer.description}"></span>
+                </div>
+            </div>
+            <div class="mt-3" sec:authorize="hasRole('ADMIN')">
+                <a th:href="@{/offers/add}" class="btn btn-primary">
+                    Добавить модель
+                </a>
+                <a th:href="@{/offers/deleteAll}" class="btn btn-danger ml-2">
+                    Удалить все модели
+                </a>
+            </div>
+        </div>
+    </div>
+</main>
+
+<footer th:replace="fragments/footer"/>
+</body>
+</html>

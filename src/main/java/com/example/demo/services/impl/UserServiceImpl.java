@@ -1,62 +1,63 @@
 package com.example.demo.services.impl;
 
-import com.example.demo.services.dtos.UserDto;
-import com.example.demo.models.User;
+import com.example.demo.dtos.UserDto;
+import com.example.demo.dtos.add.AddUserDto;
+import com.example.demo.dtos.all.ShowAllModelsDto;
+import com.example.demo.dtos.all.ShowAllUsersDto;
+import com.example.demo.models.entities.User;
 import com.example.demo.repositories.UserRepository;
 import com.example.demo.services.UserService;
-import com.example.demo.util.ValidationUtil;
 import org.modelmapper.ModelMapper;
-import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.Cacheable;
+import org.springframework.cache.annotation.EnableCaching;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.Optional;
 import java.util.UUID;
 import java.util.stream.Collectors;
 @Service
+@EnableCaching
 public class UserServiceImpl implements UserService {
-    UserRepository userRepository;
-    final ValidationUtil validationUtil;
-    final ModelMapper modelMapper;
+    private final UserRepository userRepository;
+    private final ModelMapper modelMapper;
 
-    public UserServiceImpl(ValidationUtil validationUtil, ModelMapper modelMapper) {
-        this.validationUtil = validationUtil;
+    public UserServiceImpl(UserRepository userRepository, ModelMapper modelMapper) {
+        this.userRepository = userRepository;
         this.modelMapper = modelMapper;
     }
 
     @Override
-    public UserDto create(UserDto userDto) {
-        User s = modelMapper.map(userDto, User.class);
-        return modelMapper.map(userRepository.save(s), UserDto.class);
+    public void createUser(UserDto userDto) {
+        userRepository.saveAndFlush(modelMapper.map(userDto, User.class));
+    }
+
+    @Override
+    public void addUser(AddUserDto userDto) {
+        userRepository.saveAndFlush(modelMapper.map(userDto, User.class));
     }
     @Override
-    public UserDto addUser(UserDto userDto) {
-        User s = modelMapper.map(userDto, User.class);
-        return modelMapper.map(userRepository.save(s), UserDto.class);
-    }
-    @Override
-    public void delete(UserDto userDto) {
+    public void deleteUser(UserDto userDto) {
         userRepository.deleteById(userDto.getId());
     }
     @Override
-    public void deleteById(UUID id) {
+    public void deleteUserById(UUID id) {
         userRepository.deleteById(id);
     }
+
+    @Cacheable("users")
     @Override
-    public Optional<UserDto> findById(UUID id) {
-        return Optional.ofNullable(modelMapper.map(userRepository.findById(id), UserDto.class));
-    }
-    @Override
-    public List<UserDto> getAll() {
+    public List<UserDto> findAllUsers() {
         return userRepository.findAll().stream().map((s) -> modelMapper.map(s, UserDto.class)).collect(Collectors.toList());
     }
+
     @Override
-    public UserDto findUserByUsername(String username) {
-        return modelMapper.map(userRepository.findUserByUsername(username), UserDto.class);
+    public UserDto findUserById(UUID id) {
+        return modelMapper.map(userRepository.findById(id), UserDto.class);
     }
 
-    @Autowired
-    public void setUserRepository(UserRepository userRepository) {
-        this.userRepository = userRepository;
+    @Override
+    public List<ShowAllUsersDto> findUserByUsername(String username) {
+        return userRepository.findUserByUsername(username).stream().map((s) ->
+                modelMapper.map(s, ShowAllUsersDto.class)).collect(Collectors.toList());
     }
 }

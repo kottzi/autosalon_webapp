@@ -1,62 +1,71 @@
 package com.example.demo.services.impl;
 
-import com.example.demo.services.dtos.ModelDto;
-import com.example.demo.models.Model;
+import com.example.demo.dtos.add.AddModelDto;
+import com.example.demo.dtos.all.ShowAllModelsDto;
+import com.example.demo.dtos.ModelDto;
+import com.example.demo.dtos.details.ShowDetailsModelsDto;
+import com.example.demo.models.entities.Model;
+import com.example.demo.models.enums.Category;
 import com.example.demo.repositories.ModelRepository;
 import com.example.demo.services.ModelService;
-import com.example.demo.util.ValidationUtil;
 import org.modelmapper.ModelMapper;
-import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.Cacheable;
+import org.springframework.cache.annotation.EnableCaching;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.Optional;
 import java.util.UUID;
 import java.util.stream.Collectors;
 @Service
+@EnableCaching
 public class ModelServiceImpl implements ModelService {
-    ModelRepository modelRepository;
-    final ValidationUtil validationUtil;
-    final ModelMapper modelMapper;
+    private final ModelRepository modelRepository;
+    private final ModelMapper modelMapper;
 
-    public ModelServiceImpl(ValidationUtil validationUtil, ModelMapper modelMapper) {
-        this.validationUtil = validationUtil;
+    public ModelServiceImpl(ModelRepository modelRepository, ModelMapper modelMapper) {
+        this.modelRepository = modelRepository;
         this.modelMapper = modelMapper;
     }
 
     @Override
-    public ModelDto create(ModelDto modelDto) {
-        Model s = modelMapper.map(modelDto, Model.class);
-        return modelMapper.map(modelRepository.save(s), ModelDto.class);
+    public void createModel(ModelDto modelDto) {
+        modelRepository.saveAndFlush(modelMapper.map(modelDto, Model.class));
     }
     @Override
-    public ModelDto addModel(ModelDto modelDto) {
-        Model s = modelMapper.map(modelDto, Model.class);
-        return modelMapper.map(modelRepository.save(s), ModelDto.class);
+    public void addModel(AddModelDto modelDto) {
+        modelRepository.saveAndFlush(modelMapper.map(modelDto, Model.class));
     }
+
     @Override
-    public void delete(ModelDto modelDto) {
+    public void deleteModel(ModelDto modelDto) {
         modelRepository.deleteById(modelDto.getId());
     }
     @Override
-    public void deleteById(UUID id) {
+    public void deleteModelById(UUID id) {
         modelRepository.deleteById(id);
     }
     @Override
-    public Optional<ModelDto> findById(UUID id) {
-        return Optional.ofNullable(modelMapper.map(modelRepository.findById(id), ModelDto.class));
-    }
+    public void deleteAllModels() {modelRepository.deleteAll();}
+
+    @Cacheable("models")
     @Override
-    public List<ModelDto> getAll() {
+    public List<ModelDto> findAllModels() {
         return modelRepository.findAll().stream().map((s) -> modelMapper.map(s, ModelDto.class)).collect(Collectors.toList());
     }
+
     @Override
-    public ModelDto findModelByNameAndImageURL(String name, String imageURL) {
-        return modelMapper.map(modelRepository.findModelByNameAndImageURL(name, imageURL), ModelDto.class);
+    public ModelDto findModelById(UUID id) {
+        return modelMapper.map(modelRepository.findById(id), ModelDto.class);
     }
 
-    @Autowired
-    public void setModelRepository(ModelRepository modelRepository) {
-        this.modelRepository = modelRepository;
+    @Override
+    public List<ShowAllModelsDto> findModelByCategory(Category category) {
+        return modelRepository.findModelByCategory(category).stream().map((s) ->
+                modelMapper.map(s, ShowAllModelsDto.class)).collect(Collectors.toList());
+    }
+
+    @Override
+    public ShowDetailsModelsDto findModelByName(String name) {
+        return modelMapper.map(modelRepository.findModelByName(name), ShowDetailsModelsDto.class);
     }
 }

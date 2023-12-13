@@ -1,62 +1,59 @@
 package com.example.demo.services.impl;
 
-import com.example.demo.services.dtos.OfferDto;
-import com.example.demo.models.Offer;
+import com.example.demo.dtos.add.AddOfferDto;
+import com.example.demo.dtos.OfferDto;
+import com.example.demo.models.entities.Offer;
 import com.example.demo.repositories.OfferRepository;
 import com.example.demo.services.OfferService;
-import com.example.demo.util.ValidationUtil;
 import org.modelmapper.ModelMapper;
-import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.Optional;
 import java.util.UUID;
 import java.util.stream.Collectors;
 @Service
 public class OfferServiceImpl implements OfferService {
-    OfferRepository offerRepository;
-    final ValidationUtil validationUtil;
-    final ModelMapper modelMapper;
+    private final OfferRepository offerRepository;
+    private final ModelMapper modelMapper;
 
-    public OfferServiceImpl(ValidationUtil validationUtil, ModelMapper modelMapper) {
-        this.validationUtil = validationUtil;
+    public OfferServiceImpl(OfferRepository offerRepository, ModelMapper modelMapper) {
+        this.offerRepository = offerRepository;
         this.modelMapper = modelMapper;
     }
 
     @Override
-    public OfferDto create(OfferDto offerDto) {
-        Offer s = modelMapper.map(offerDto, Offer.class);
-        return modelMapper.map(offerRepository.save(s), OfferDto.class);
+    public void createOffer(OfferDto offerDto) {
+        offerRepository.saveAndFlush(modelMapper.map(offerDto, Offer.class));
     }
     @Override
-    public OfferDto addOffer(OfferDto offerDto) {
-        Offer s = modelMapper.map(offerDto, Offer.class);
-        return modelMapper.map(offerRepository.save(s), OfferDto.class);
+    public void addOffer(AddOfferDto offerDto) {
+        offerRepository.saveAndFlush(modelMapper.map(offerDto, Offer.class));
     }
+
     @Override
-    public void delete(OfferDto offerDto) {
+    public void deleteOffer(OfferDto offerDto) {
         offerRepository.deleteById(offerDto.getId());
     }
     @Override
-    public void deleteById(UUID id) {
+    public void deleteOfferById(UUID id) {
         offerRepository.deleteById(id);
     }
     @Override
-    public Optional<OfferDto> findById(UUID id) {
-        return Optional.ofNullable(modelMapper.map(offerRepository.findById(id), OfferDto.class));
-    }
+    public void deleteAllOffers() {offerRepository.deleteAll();}
+
     @Override
-    public List<OfferDto> getAll() {
+    public List<OfferDto> findAllOffers() {
         return offerRepository.findAll().stream().map((s) -> modelMapper.map(s, OfferDto.class)).collect(Collectors.toList());
     }
+
+    @Override
+    public OfferDto findOfferById(UUID id) {
+        return modelMapper.map(offerRepository.findById(id), OfferDto.class);
+    }
+
     @Override
     public OfferDto findOfferByMileageBetween(int start, int end) {
         return modelMapper.map(offerRepository.findOfferByMileageBetween(start, end), OfferDto.class);
-    }
-
-    @Autowired
-    public void setOfferRepository(OfferRepository offerRepository) {
-        this.offerRepository = offerRepository;
     }
 }

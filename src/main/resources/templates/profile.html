@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="ru" class="h-100" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+
+<head th:replace="fragments/head">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+</head>
+
+<body class="d-flex flex-column h-100">
+<div th:replace="fragments/navbar">NAVIGATION</div>
+
+<main>
+    <div class="container">
+        <div class="row">
+            <div class="col-md-2"></div>
+            <div class="jumbotron text-center rounded col-md-12 align-self-center pt-5">
+                <div class="justify-content-center">
+                    <h1>
+                        ПРОФИЛЬ
+                    </h1>
+                </div>
+                <div class="row rounded">
+                    <div class="col-md-6" th:object="${user}">
+                        <div class="col-md-6"><img src="/img/icon.png" height="350px"></div>
+                        <h4 th:text="'Никнейм: ' + *{username}"></h4>
+                        <h4 th:text="'Имя: ' + *{firstName}"></h4>
+                        <h4 th:text="'Фамилия: ' + *{lastName}"></h4>
+                        <h4>Роль пользователя: </h4>
+                        <div sec:authentication="principal.authorities"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</main>
+
+<footer th:replace="fragments/footer"/>
+</body>
+</html>

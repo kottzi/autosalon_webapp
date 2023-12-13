@@ -1,18 +1,22 @@
 package com.example.demo.services;
 
-import com.example.demo.services.dtos.BrandDto;
+import com.example.demo.dtos.add.AddBrandDto;
+import com.example.demo.dtos.all.ShowAllBrandsDto;
+import com.example.demo.dtos.BrandDto;
 
-import java.time.LocalDate;
 import java.util.List;
-import java.util.Optional;
 import java.util.UUID;
 
 public interface BrandService {
-    BrandDto create(BrandDto brandDto);
-    BrandDto addBrand(BrandDto brandDto);
-    void delete(BrandDto brandDto);
-    void deleteById(UUID id);
-    Optional<BrandDto> findById(UUID id);
-    List<BrandDto> getAll();
-    BrandDto findBrandByCreated(LocalDate created);
+    void createBrand(BrandDto brandDto);
+    void addBrand(AddBrandDto brandDto);
+
+    void deleteBrand(BrandDto brandDto);
+    void deleteBrandById(UUID id);
+    void deleteAllBrands();
+
+    List<BrandDto> findAllBrands();
+    BrandDto findBrandById(UUID id);
+
+    List<ShowAllBrandsDto> findBrandByName(String name);
 }

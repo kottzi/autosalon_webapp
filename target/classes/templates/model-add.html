@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="ru" class="h-100" xmlns:th="http://www.thymeleaf.org">
+
+<head th:replace="fragments/head">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+</head>
+
+<body class="d-flex flex-column h-100">
+<div th:replace="fragments/navbar">NAVIGATION</div>
+
+<main class="d-flex align-items-center justify-content-center" style="height: 100vh;">
+    <div style="flex: 1; display: flex; flex-direction: column; align-items: center; text-align: center; max-width: 400px;">
+        <form th:action="@{/models/add}"
+              th:method="post"
+              th:object="${addModelDto}"
+              class="mb-4">
+            <div class="mb-3">
+                <input th:field="*{name}"
+                       th:errorclass="is-invalid"
+                       type="text" class="textfield" placeholder="Название модели:"/>
+            </div>
+            <small th:if="${#fields.hasErrors('name')}" th:errors="*{name}" class = "error">
+                Error message
+            </small>
+
+            <div class="mb-3">
+                <label for="category">Выберите категорию:</label>
+                <select id="category" th:field="*{category}" th:errorclass="is-invalid" class="form-control">
+                    <option value="" disabled selected>Выберите категорию</option>
+                    <option th:each="category : ${T(com.example.demo.models.enums.Category).values()}"
+                            th:value="${category}" th:text="${category.name()}">
+                    </option>
+                </select>
+                <div th:if="${#fields.hasErrors('category')}" th:errors="*{category}" class="invalid-feedback">
+                    Неверная категория
+                </div>
+            </div>
+
+            <div class="mb-3">
+                <input th:field="*{imageURL}"
+                       th:errorclass="is-invalid"
+                       type="text" class="textfield" placeholder="Ссылка на фото:"
+                />
+            </div>
+
+            <div class="mb-3">
+                <label for="brand">Выберите бренд:</label>
+                <select id="brand" th:field="*{showAllBrandsDto}" th:errorclass="is-invalid" class="form-control">
+                    <option value="" disabled selected>Выберите бренд</option>
+                    <option th:each="brand : ${brands}"
+                            th:value="${brand.name}" th:text="${brand.name}">
+                    </option>
+                </select>
+                <div th:if="${#fields.hasErrors('showAllBrandsDto')}" th:errors="*{showAllBrandsDto}" class="invalid-feedback">
+                    Неверный бренд
+                </div>
+            </div>
+
+            <div class="mb-3">
+                <input th:field="*{startYear}"
+                       th:errorclass="is-invalid"
+                       type="text" class="textfield" placeholder="Год выпуска"
+                />
+            </div>
+
+            <div style="display: flex; justify-content: center;">
+                <button type="submit" class="btn btn-primary">
+                    Добавить модель
+                </button>
+            </div>
+        </form>
+    </div>
+</main>
+
+<footer th:replace="fragments/footer"></footer>
+</body>
+</html>

@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="ru" class="h-100" xmlns:th="http://www.thymeleaf.org">
+
+<head th:replace="fragments/head">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+</head>
+
+<body class="d-flex flex-column h-100">
+<div th:replace="fragments/navbar">NAVIGATION</div>
+
+<main class="d-flex align-items-center justify-content-center" style="height: 100vh;">
+    <div style="flex: 1; display: flex; flex-direction: column; align-items: center; text-align: center; max-width: 400px;">
+        <form th:action="@{/brands/add}" th:method="post" th:object="${addBrandDto}" class="mb-4">
+            <h2>
+                Добавление бренда:
+            </h2>
+            <div class="mb-3">
+                <input th:field="*{name}"
+                       th:errorclass="is-invalid"
+                       type="text" class="textfield" placeholder="Название бренда:"/>
+            </div>
+            <small th:if="${#fields.hasErrors('name')}" th:errors="*{name}" class = "error">
+                Error message
+            </small>
+
+            <div style="display: flex; justify-content: center;">
+                <button type="submit" class="btn btn-primary">
+                    Добавить бренд
+                </button>
+            </div>
+        </form>
+    </div>
+</main>
+
+<footer th:replace="fragments/footer"></footer>
+</body>
+</html>

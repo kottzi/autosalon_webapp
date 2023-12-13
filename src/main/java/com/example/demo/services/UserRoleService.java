@@ -1,16 +1,18 @@
 package com.example.demo.services;
 
-import com.example.demo.services.dtos.UserRoleDto;
+import com.example.demo.dtos.UserRoleDto;
+import com.example.demo.dtos.add.AddUserRoleDto;
 
 import java.util.List;
-import java.util.Optional;
 import java.util.UUID;
 
 public interface UserRoleService {
-    UserRoleDto create(UserRoleDto userRoleDto);
-    UserRoleDto addUserRole(UserRoleDto userRoleDto);
-    void delete(UserRoleDto userRoleDto);
-    void deleteById(UUID id);
-    Optional<UserRoleDto> findById(UUID id);
-    List<UserRoleDto> getAll();
+    void createUserRole(UserRoleDto userRoleDto);
+
+    void addUserRole(AddUserRoleDto userRoleDto);
+    void deleteUserRole(UserRoleDto userRoleDto);
+    void deleteUserRoleById(UUID id);
+
+    List<UserRoleDto> findAllUserRoles();
+    UserRoleDto findUserRoleById(UUID id);
 }

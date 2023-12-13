@@ -1,18 +1,20 @@
 package com.example.demo.services;
 
-import com.example.demo.models.Offer;
-import com.example.demo.services.dtos.OfferDto;
+import com.example.demo.dtos.add.AddOfferDto;
+import com.example.demo.dtos.OfferDto;
 
 import java.util.List;
-import java.util.Optional;
 import java.util.UUID;
 
 public interface OfferService {
-    OfferDto create(OfferDto offerDto);
-    OfferDto addOffer(OfferDto offerDto);
-    void delete(OfferDto offerDto);
-    void deleteById(UUID id);
-    Optional<OfferDto> findById(UUID id);
-    List<OfferDto> getAll();
+    void createOffer(OfferDto offerDto);
+    void addOffer(AddOfferDto offerDto);
+
+    void deleteOffer(OfferDto offerDto);
+    void deleteOfferById(UUID id);
+    void deleteAllOffers();
+
+    List<OfferDto> findAllOffers();
+    OfferDto findOfferById(UUID id);
     OfferDto findOfferByMileageBetween(int start, int end);
 }

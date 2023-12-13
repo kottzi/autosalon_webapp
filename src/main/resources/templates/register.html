@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="ru" class="h-100" xmlns:th="http://www.thymeleaf.org">
+
+<head th:replace="fragments/head">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+</head>
+
+<body class="d-flex flex-column h-100">
+<div th:replace="fragments/navbar">NAVIGATION</div>
+
+<main>
+    <div class="container">
+        <div class="row">
+            <div class="col-md-2"></div>
+            <div class="jumbotron text-center rounded col-md-8 align-self-center pt-5">
+                <div class="justify-content-center">
+                    <h1>
+                        РЕГИСТРАЦИЯ
+                    </h1>
+                </div>
+                <form th:action="@{/register}"
+                      th:method="post"
+                      th:object="${userRegistrationDto}"
+                      class="m-md-auto w-50 pb-3">
+
+                    <div class="mb-3">
+                        <label class="form-label" for="username">Никнейм:</label>
+                        <input th:field="*{username}"
+                               th:errorclass="is-invalid"
+                               type="text" class="form-control text-center" id="username" aria-describedby="usernameHelp"
+                               name="username"/>
+                        <small th:if="${#fields.hasErrors('username')}" th:errors="*{username}" class="text-danger">Error
+                            message</small>
+                    </div>
+
+                    <div class="mb-3">
+                        <label class="form-label" for="firstName">Имя:</label>
+                        <input th:field="*{firstName}"
+                               th:errorclass="is-invalid"
+                               type="text" class="form-control text-center" id="firstName" aria-describedby="firstName"
+                               name="firstName"/>
+                        <small th:if="${#fields.hasErrors('firstName')}" th:errors="*{firstName}" class="text-danger">Error
+                            message</small>
+                    </div>
+
+                    <div class="mb-3">
+                        <label class="form-label" for="lastName">Фамилия:</label>
+                        <input th:field="*{lastName}"
+                               th:errorclass="is-invalid"
+                               type="lastName" class="form-control text-center"
+                               id="lastName" aria-describedby="lastName" name="lastName"/>
+                        <small th:if="${#fields.hasErrors('lastName')}" th:errors="*{lastName}"
+                               class="text-danger">Error
+                            message</small>
+                    </div>
+
+
+                    <div class="mb-3">
+                        <label class="form-label" for="password">Пароль:</label>
+                        <input th:field="*{password}"
+                               required minlength="5" maxlength="20"
+                               th:errorclass="is-invalid"
+                               type="password" min="0" class="form-control text-center"
+                               id="password" aria-describedby="password" name="password"/>
+                        <small th:if="${#fields.hasErrors('password')}" th:errors="*{password}"
+                               class="text-danger">Error
+                            message</small>
+                    </div>
+
+
+                    <div class="mb-3">
+                        <label class="form-label" for="confirmPassword">Повторите пароль:</label>
+                        <input th:field="*{confirmPassword}"
+                               required minlength="5" maxlength="20"
+                               th:errorclass="is-invalid"
+                               type="password" min="0" class="form-control text-center"
+                               id="confirmPassword" aria-describedby="confirmPassword" name="confirmPassword"/>
+                        <small th:if="${#fields.hasErrors('confirmPassword')}" th:errors="*{confirmPassword}"
+                               class="text-danger">Error
+                            message</small>
+                    </div>
+                    <p class="text-danger" th:if="${badConfirm}">
+                        Password mismatch.
+                    </p>
+
+                    <button type="submit" class="btn btn-primary">ЗАРЕГЕСТРИРОВАТЬСЯ</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</main>
+
+<footer th:replace="fragments/footer"/>
+</body>
+</html>
