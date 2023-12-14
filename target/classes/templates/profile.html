@@ -12,22 +12,23 @@
 
 <main>
     <div class="container">
-        <div class="row">
-            <div class="col-md-2"></div>
-            <div class="jumbotron text-center rounded col-md-12 align-self-center pt-5">
-                <div class="justify-content-center">
-                    <h1>
-                        ПРОФИЛЬ
-                    </h1>
-                </div>
-                <div class="row rounded">
-                    <div class="col-md-6" th:object="${user}">
-                        <div class="col-md-6"><img src="/img/icon.png" height="350px"></div>
-                        <h4 th:text="'Никнейм: ' + *{username}"></h4>
-                        <h4 th:text="'Имя: ' + *{firstName}"></h4>
-                        <h4 th:text="'Фамилия: ' + *{lastName}"></h4>
-                        <h4>Роль пользователя: </h4>
-                        <div sec:authentication="principal.authorities"></div>
+        <div class="row justify-content-center">
+            <div class="col-md-8">
+                <div class="jumbotron text-center rounded mt-5">
+                    <h1 class="display-4">ВАШ ПРОФИЛЬ</h1>
+                    <div class="row mt-4">
+                        <div class="col-md-6">
+                            <div class="text-center">
+                                <img src="/img/icon.png" height="150px" class="mb-3 rounded-circle">
+                            </div>
+                        </div>
+                        <div class="col-md-6 align-self-center" th:object="${user}">
+                            <h4 th:text="'Никнейм: ' + *{username}"></h4>
+                            <h4 th:text="'Имя: ' + *{firstName}"></h4>
+                            <h4 th:text="'Фамилия: ' + *{lastName}"></h4>
+                            <h4 class="mt-3">Роль пользователя: </h4>
+                            <div sec:authentication="principal.authorities"></div>
+                        </div>
                     </div>
                 </div>
             </div>

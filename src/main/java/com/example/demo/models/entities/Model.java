@@ -4,6 +4,7 @@ import com.example.demo.models.enums.Category;
 import jakarta.persistence.*;
 
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 @Entity
@@ -14,7 +15,7 @@ public class Model extends BaseEntity {
     private String imageURL;
     private int startYear;
     private int endYear;
-    private Set<Offer> offers = new HashSet<>();
+    private List<Offer> offers;
     private Brand brand;
 
 
@@ -59,7 +60,7 @@ public class Model extends BaseEntity {
         this.endYear = endYear;
     }
 
-    public Model(String name, Category category, String imageURL, int startYear, int endYear, Set<Offer> offers, Brand brand) {
+    public Model(String name, Category category, String imageURL, int startYear, int endYear, List<Offer> offers, Brand brand) {
         this.name = name;
         this.category = category;
         this.imageURL = imageURL;
@@ -71,10 +72,10 @@ public class Model extends BaseEntity {
     public Model() {}
 
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "model", cascade = CascadeType.REMOVE)
-    public Set<Offer> getOffers() {
+    public List<Offer> getOffers() {
         return offers;
     }
-    public void setOffers(Set<Offer> offers) {
+    public void setOffers(List<Offer> offers) {
         this.offers = offers;
     }
 

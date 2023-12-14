@@ -3,6 +3,7 @@ package com.example.demo.services;
 import com.example.demo.dtos.UserDto;
 import com.example.demo.dtos.add.AddUserDto;
 import com.example.demo.dtos.all.ShowAllUsersDto;
+import com.example.demo.dtos.update.UpdateUserDto;
 
 import java.util.List;
 import java.util.UUID;
@@ -17,4 +18,6 @@ public interface UserService {
     List<UserDto> findAllUsers();
     UserDto findUserById(UUID id);
     List<ShowAllUsersDto> findUserByUsername(String username);
+
+    void updateUser(UpdateUserDto userDto);
 }

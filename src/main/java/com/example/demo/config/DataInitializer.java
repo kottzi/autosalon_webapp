@@ -1,5 +1,7 @@
 package com.example.demo.config;
 
+import com.example.demo.models.entities.Brand;
+import com.example.demo.repositories.BrandRepository;
 import org.springframework.beans.factory.annotation.Value;
 import com.example.demo.models.entities.User;
 import com.example.demo.models.entities.UserRole;
@@ -10,14 +12,18 @@ import org.springframework.boot.CommandLineRunner;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
 
+import java.util.prefs.BackingStoreException;
+
 @Component
 public class DataInitializer implements CommandLineRunner {
     private final PasswordEncoder passwordEncoder;
+    private final BrandRepository brandRepository;
     private final UserRepository userRepository;
     private final UserRoleRepository userRoleRepository;
     private final String defaultPassword;
 
-    public DataInitializer(UserRepository userRepository, UserRoleRepository userRoleRepository, PasswordEncoder passwordEncoder, @Value("123456")String defaultPassword) {
+    public DataInitializer(BrandRepository brandRepository, UserRepository userRepository, UserRoleRepository userRoleRepository, PasswordEncoder passwordEncoder, @Value("123456")String defaultPassword) {
+        this.brandRepository = brandRepository;
         this.userRepository = userRepository;
         this.userRoleRepository = userRoleRepository;
         this.passwordEncoder = passwordEncoder;

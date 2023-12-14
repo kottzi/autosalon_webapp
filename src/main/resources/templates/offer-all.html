@@ -21,7 +21,7 @@
                     <span th:text="${offer.description}"></span>
                 </div>
             </div>
-            <div class="mt-3" sec:authorize="hasRole('ADMIN')">
+            <div class="mt-3" sec:authorize="isAuthenticated()">
                 <a th:href="@{/offers/add}" class="btn btn-primary">
                     Добавить модель
                 </a>

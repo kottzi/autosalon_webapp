@@ -11,7 +11,4 @@ import java.io.Serializable;
 @Data
 public class ShowAllUsersDto implements Serializable {
     private String username;
-    private String firstName;
-    private String lastName;
-    private boolean isActive;
 }

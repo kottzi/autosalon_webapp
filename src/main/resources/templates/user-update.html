@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="ru" class="h-100" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+
+<head th:replace="fragments/head">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+</head>
+
+<body class="d-flex flex-column h-100">
+<div th:replace="fragments/navbar">NAVIGATION</div>
+
+<main class="d-flex align-items-center justify-content-center" style="height: 100vh;">
+    <div style="flex: 1; display: flex; flex-direction: column; align-items: center; text-align: center; max-width: 400px;">
+        <form th:action="@{/users/update}" th:object="${updateUser}" method="post">
+            <input type="hidden" th:field="*{id}" />
+            <h2>
+                Изменение пользователя
+            </h2>
+
+            <div class="mb-3">
+                <input th:field="*{username}"
+                       th:errorclass="is-invalid"
+                       type="text" class="textfield" placeholder="Введите новый никнейм:"/>
+            </div>
+            <small th:if="${#fields.hasErrors('username')}" th:errors="*{username}" class = "error">
+                Error message
+            </small>
+
+            <div class="mb-3">
+                <input th:field="*{firstName}"
+                       th:errorclass="is-invalid"
+                       type="text" class="textfield" placeholder="Введите новое имя:"/>
+            </div>
+            <small th:if="${#fields.hasErrors('firstName')}" th:errors="*{firstName}" class = "error">
+                Error message
+            </small>
+
+            <div class="mb-3">
+                <input th:field="*{lastName}"
+                       th:errorclass="is-invalid"
+                       type="text" class="textfield" placeholder="Введите новую фамилию:"/>
+            </div>
+            <small th:if="${#fields.hasErrors('lastName')}" th:errors="*{lastName}" class = "error">
+                Error message
+            </small>
+
+            <div style="display: flex; justify-content: center;">
+                <button type="submit" class="btn btn-primary">
+                    Сохранить изменения
+                </button>
+            </div>
+        </form>
+    </div>
+</main>
+
+<footer th:replace="fragments/footer"></footer>
+</body>
+</html>

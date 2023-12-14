@@ -1,13 +1,19 @@
 package com.example.demo.web;
 
 import com.example.demo.dtos.BrandDto;
+import com.example.demo.dtos.ModelDto;
 import com.example.demo.dtos.add.AddModelDto;
 import com.example.demo.dtos.all.ShowAllBrandsDto;
 import com.example.demo.dtos.all.ShowAllModelsDto;
+import com.example.demo.dtos.update.UpdateBrandDto;
+import com.example.demo.dtos.update.UpdateModelDto;
 import com.example.demo.models.enums.Category;
 import com.example.demo.services.BrandService;
 import com.example.demo.services.ModelService;
 import jakarta.validation.Valid;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+import org.hibernate.sql.Update;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -17,6 +23,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.util.List;
+import java.util.UUID;
 import java.util.stream.Collectors;
 
 @Controller
@@ -24,6 +31,7 @@ import java.util.stream.Collectors;
 public class ModelController {
     private ModelService modelService;
     private BrandService brandService;
+    private static final Logger LOG = LogManager.getLogger(Controller.class);
 
     @Autowired
     public void setModelService(ModelService modelService) {
@@ -38,6 +46,8 @@ public class ModelController {
     public AddModelDto initModel() {
         return new AddModelDto();
     }
+    @ModelAttribute
+    public UpdateModelDto updateModelDto() { return new UpdateModelDto(); }
     @ModelAttribute("brands")
     List<BrandDto> findAllBrands() {return brandService.findAllBrands();}
 
@@ -81,5 +91,24 @@ public class ModelController {
     public String modelDetails(@PathVariable("model-name") String name, Model model) {
         model.addAttribute("modelDetails", modelService.findModelByName(name));
         return "/model-details";
+    }
+
+    @GetMapping("/update/{id}")
+    public String updateModel(@PathVariable UUID id, Model model) {
+        ModelDto modelDto = modelService.findModelById(id);
+        model.addAttribute("updateModel", modelDto);
+        return "/model-update";
+    }
+
+    @PostMapping("/update")
+    public String updateModel(@ModelAttribute UpdateModelDto updateModelDto) {
+        modelService.updateModel(updateModelDto);
+        return "redirect:/models/all";
+    }
+
+    @GetMapping("/delete/{id}")
+    public String deleteBrand(@PathVariable UUID id) {
+        modelService.deleteModelById(id);
+        return "redirect:/models/all";
     }
 }

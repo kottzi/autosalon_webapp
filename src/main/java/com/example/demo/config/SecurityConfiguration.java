@@ -32,10 +32,10 @@ public class SecurityConfiguration {
                                 authorizeHttpRequests.
                                         requestMatchers(PathRequest.toStaticResources().atCommonLocations())
                                         .permitAll().
-                                        requestMatchers("/", "/login", "/register", "/login-error", "/brands/all", "/models/all", "/offers/all", "/users/all")
+                                        requestMatchers("/", "/login", "/register", "/login-error", "/brands/all", "/models/all")
                                         .permitAll().
-                                        requestMatchers("/profile").authenticated().
-                                        requestMatchers("/brands/add","/brands/deleteAll","/models/add","/models/deleteAll","/offers/add","/offers/deleteAll").hasRole(Role.ADMIN.name()).
+                                        requestMatchers("/profile", "/offers/all","/users/all").authenticated().
+//                                        requestMatchers("/brands/add","/brands/deleteAll","/models/add","/models/deleteAll","/offers/add","/offers/deleteAll").hasRole(Role.ADMIN.name()).
                                         anyRequest().authenticated()
                 )
                 .formLogin(

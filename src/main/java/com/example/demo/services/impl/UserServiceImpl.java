@@ -4,6 +4,9 @@ import com.example.demo.dtos.UserDto;
 import com.example.demo.dtos.add.AddUserDto;
 import com.example.demo.dtos.all.ShowAllModelsDto;
 import com.example.demo.dtos.all.ShowAllUsersDto;
+import com.example.demo.dtos.update.UpdateModelDto;
+import com.example.demo.dtos.update.UpdateUserDto;
+import com.example.demo.models.entities.Model;
 import com.example.demo.models.entities.User;
 import com.example.demo.repositories.UserRepository;
 import com.example.demo.services.UserService;
@@ -13,6 +16,7 @@ import org.springframework.cache.annotation.EnableCaching;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.UUID;
 import java.util.stream.Collectors;
 @Service
@@ -59,5 +63,17 @@ public class UserServiceImpl implements UserService {
     public List<ShowAllUsersDto> findUserByUsername(String username) {
         return userRepository.findUserByUsername(username).stream().map((s) ->
                 modelMapper.map(s, ShowAllUsersDto.class)).collect(Collectors.toList());
+    }
+
+    @Override
+    public void updateUser(UpdateUserDto updateUserDto) {
+        Optional<User> optionalUser = userRepository.findById(updateUserDto.getId());
+        if (optionalUser.isPresent()) {
+            User user = optionalUser.get();
+            user.setUsername(updateUserDto.getUsername());
+            user.setFirstName(updateUserDto.getFirstName());
+            user.setLastName(updateUserDto.getLastName());
+            userRepository.save(user);
+        }
     }
 }

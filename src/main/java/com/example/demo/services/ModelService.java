@@ -5,7 +5,9 @@ import com.example.demo.dtos.add.AddModelDto;
 import com.example.demo.dtos.all.ShowAllModelsDto;
 import com.example.demo.dtos.ModelDto;
 import com.example.demo.dtos.details.ShowDetailsModelsDto;
+import com.example.demo.dtos.update.UpdateModelDto;
 import com.example.demo.models.enums.Category;
+import org.hibernate.sql.Update;
 
 import java.util.List;
 import java.util.UUID;
@@ -23,4 +25,6 @@ public interface ModelService {
 
     List<ShowAllModelsDto> findModelByCategory(Category category);
     ShowDetailsModelsDto findModelByName(String name);
+
+    void updateModel(UpdateModelDto modelDto);
 }

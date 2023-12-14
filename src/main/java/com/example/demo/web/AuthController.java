@@ -21,12 +21,9 @@ import java.security.Principal;
 @Controller
 public class AuthController {
     private AuthService authService;
-    private ModelMapper modelMapper;
 
     @Autowired
     public void setAuthService(AuthService authService) {this.authService = authService;}
-    @Autowired
-    public void setModelMapper(ModelMapper modelMapper) {this.modelMapper = modelMapper;}
 
     @ModelAttribute
     public UserRegistrationDto initRegistration() {
