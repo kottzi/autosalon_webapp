@@ -1,8 +1,10 @@
 package com.example.demo.dtos.registation;
 
+import com.example.demo.utils.validation.UniqueUserName;
 import jakarta.validation.constraints.*;
 
 public class UserRegistrationDto {
+    @UniqueUserName
     private String username;
     private String firstName;
     private String lastName;

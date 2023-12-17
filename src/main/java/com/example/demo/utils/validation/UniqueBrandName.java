@@ -9,7 +9,7 @@ import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
 @Retention(RetentionPolicy.RUNTIME)
-@Target(ElementType.METHOD)
+@Target(ElementType.FIELD)
 @Constraint(validatedBy = UniqueBrandNameValidator.class)
 public @interface UniqueBrandName {
     String message() default "Такой бренд уже существует!";
