@@ -20,5 +20,5 @@ public interface ModelRepository extends JpaRepository<Model, UUID> {
 
     @Transactional
     @Modifying
-    ShowDetailsModelsDto findModelByName(String name);
+    List<?> findModelByName(String name);
 }

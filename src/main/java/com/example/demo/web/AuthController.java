@@ -5,7 +5,6 @@ import com.example.demo.dtos.registation.UserRegistrationDto;
 import com.example.demo.models.entities.User;
 import com.example.demo.services.security.AuthService;
 import jakarta.validation.Valid;
-import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.stereotype.Controller;
@@ -49,7 +48,7 @@ public class AuthController {
     }
 
     @PostMapping("/register")
-    public String doRegister(UserRegistrationDto userRegistrationDto,
+    public String doRegister(@Valid UserRegistrationDto userRegistrationDto,
                              BindingResult bindingResult,
                              RedirectAttributes redirectAttributes) {
         if (bindingResult.hasErrors()) {

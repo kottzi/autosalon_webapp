@@ -10,9 +10,9 @@ import java.lang.annotation.Target;
 
 @Retention(RetentionPolicy.RUNTIME)
 @Target(ElementType.METHOD)
-@Constraint(validatedBy = UniqueUserNameValidator.class)
-public @interface UniqueUserName {
-    String message() default "Такое имя пользователя уже существует!";
+@Constraint(validatedBy = UniqueModelNameValidator.class)
+public @interface UniqueModelName {
+    String message() default "Такая модель уже существует!";
 
     Class<?>[] groups() default {};
 

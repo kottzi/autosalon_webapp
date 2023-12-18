@@ -17,13 +17,11 @@ import java.util.prefs.BackingStoreException;
 @Component
 public class DataInitializer implements CommandLineRunner {
     private final PasswordEncoder passwordEncoder;
-    private final BrandRepository brandRepository;
     private final UserRepository userRepository;
     private final UserRoleRepository userRoleRepository;
     private final String defaultPassword;
 
-    public DataInitializer(BrandRepository brandRepository, UserRepository userRepository, UserRoleRepository userRoleRepository, PasswordEncoder passwordEncoder, @Value("123456")String defaultPassword) {
-        this.brandRepository = brandRepository;
+    public DataInitializer(UserRepository userRepository, UserRoleRepository userRoleRepository, PasswordEncoder passwordEncoder, @Value("123456")String defaultPassword) {
         this.userRepository = userRepository;
         this.userRoleRepository = userRoleRepository;
         this.passwordEncoder = passwordEncoder;

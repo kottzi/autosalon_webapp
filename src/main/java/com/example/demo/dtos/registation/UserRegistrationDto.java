@@ -4,7 +4,6 @@ import com.example.demo.utils.validation.UniqueUserName;
 import jakarta.validation.constraints.*;
 
 public class UserRegistrationDto {
-    @UniqueUserName
     private String username;
     private String firstName;
     private String lastName;
@@ -13,7 +12,7 @@ public class UserRegistrationDto {
 
     public UserRegistrationDto() {}
 
-
+    @UniqueUserName
     @NotEmpty(message = "Username cannot be null or empty!")
     @Size(min = 5, max = 25)
     public String getUsername() {

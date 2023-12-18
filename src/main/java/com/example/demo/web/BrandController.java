@@ -6,6 +6,7 @@ import com.example.demo.dtos.all.ShowAllBrandsDto;
 import com.example.demo.dtos.update.UpdateBrandDto;
 import com.example.demo.services.BrandService;
 import jakarta.validation.Valid;
+import org.apache.logging.log4j.Level;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,6 +16,7 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import java.security.Principal;
 import java.util.List;
 import java.util.UUID;
 
@@ -33,21 +35,24 @@ public class BrandController {
     @GetMapping("/add")
     public String createBrand() {return "/brand-add";}
     @GetMapping("/all")
-    public String showBrands(Model model) {
+    public String showBrands(Model model, Principal principal) {
+        LOG.log(Level.INFO, String.format("Show all brands for %s",principal.getName()));
         model.addAttribute("showBrands", brandService.findAllBrands());
         return "/brand-all";
     }
 
     @PostMapping("/add")
-    public String createBrand(@Valid AddBrandDto addBrandDto, BindingResult bindingResult, RedirectAttributes redirectAttributes) {
-//        if (bindingResult.hasErrors()) {
-//            redirectAttributes.addFlashAttribute("addBrandDto", addBrandDto);
-//            redirectAttributes.addFlashAttribute("org.springframework.validation.BindingResult.addBrandDto", bindingResult);
-//            return "redirect:/brands/add";
-//        } else {
+    public String createBrand(AddBrandDto addBrandDto, BindingResult bindingResult, RedirectAttributes redirectAttributes, Principal principal) {
+        LOG.log(Level.INFO, String.format("Add a new brand with name %s by %s",
+                addBrandDto.getName(), principal.getName()));
+        if (bindingResult.hasErrors()) {
+            redirectAttributes.addFlashAttribute("addBrandDto", addBrandDto);
+            redirectAttributes.addFlashAttribute("org.springframework.validation.BindingResult.addBrandDto", bindingResult);
+            return "redirect:/brands/add";
+        } else {
             brandService.addBrand(addBrandDto);
             return "redirect:/brands/all";
-//        }
+        }
     }
 
     @RequestMapping("/deleteAll")
@@ -77,7 +82,9 @@ public class BrandController {
     }
 
     @GetMapping("/delete/{id}")
-    public String deleteBrand(@PathVariable UUID id) {
+    public String deleteBrand(@PathVariable UUID id, Principal principal) {
+        LOG.log(Level.INFO, String.format("Delete a brand with name %s by %s",
+                brandService.findBrandById(id).getName(), principal.getName()));
         brandService.deleteBrandById(id);
         return "redirect:/brands/all";
     }

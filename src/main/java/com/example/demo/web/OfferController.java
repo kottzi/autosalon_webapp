@@ -36,7 +36,7 @@ public class OfferController {
     }
 
     @PostMapping("/add")
-    public String createOffer(@Valid AddOfferDto addOfferDto, BindingResult bindingResult, RedirectAttributes redirectAttributes) {
+    public String createOffer(AddOfferDto addOfferDto, BindingResult bindingResult, RedirectAttributes redirectAttributes) {
         if (bindingResult.hasErrors()) {
             redirectAttributes.addFlashAttribute("addOfferDto", addOfferDto);
             redirectAttributes.addFlashAttribute("org.springframework.validation.BindingResult.addOfferDto", bindingResult);

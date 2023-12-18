@@ -8,11 +8,11 @@ import jakarta.validation.constraints.Size;
 import java.time.LocalDate;
 
 public class AddBrandDto {
-    @UniqueBrandName
     private String name;
     private LocalDate created;
     private LocalDate modified;
 
+    @UniqueBrandName
     @NotEmpty(message = "Brand name must not be null or empty!")
     @Size(min = 3, max = 25, message = "Brand name must be between 3 and 25 characters!")
     public String getName() {

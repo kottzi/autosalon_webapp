@@ -11,6 +11,7 @@ import com.example.demo.models.enums.Category;
 import com.example.demo.services.BrandService;
 import com.example.demo.services.ModelService;
 import jakarta.validation.Valid;
+import org.apache.logging.log4j.Level;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.hibernate.sql.Update;
@@ -22,6 +23,7 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import java.security.Principal;
 import java.util.List;
 import java.util.UUID;
 import java.util.stream.Collectors;
@@ -57,13 +59,16 @@ public class ModelController {
     }
 
     @GetMapping("/all")
-    public String showModels(Model model) {
+    public String showModels(Model model, Principal principal) {
+        LOG.log(Level.INFO, String.format("Show all models for %s",principal.getName()));
         model.addAttribute("showModels", modelService.findAllModels());
         return "/model-all";
     }
 
     @PostMapping("/add")
-    public String createModel(@Valid AddModelDto addModelDto, BindingResult bindingResult, RedirectAttributes redirectAttributes) {
+    public String createModel(@Valid AddModelDto addModelDto, BindingResult bindingResult, RedirectAttributes redirectAttributes, Principal principal) {
+        LOG.log(Level.INFO, String.format("Add a new model with name %s by %s",
+                modelService.findModelByName(addModelDto.getName()), principal.getName()));
         if (bindingResult.hasErrors()) {
             redirectAttributes.addFlashAttribute("addModelDto", addModelDto);
             redirectAttributes.addFlashAttribute("org.springframework.validation.BindingResult.addModelDto", bindingResult);
@@ -107,7 +112,9 @@ public class ModelController {
     }
 
     @GetMapping("/delete/{id}")
-    public String deleteBrand(@PathVariable UUID id) {
+    public String deleteBrand(@PathVariable UUID id, Principal principal) {
+        LOG.log(Level.INFO, String.format("Delete a user with nickname %s by %s",
+                modelService.findModelById(id).getName(), principal.getName()));
         modelService.deleteModelById(id);
         return "redirect:/models/all";
     }

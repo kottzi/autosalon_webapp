@@ -4,6 +4,7 @@ import com.example.demo.dtos.UserDto;
 import com.example.demo.dtos.all.ShowAllUsersDto;
 import com.example.demo.dtos.update.UpdateUserDto;
 import com.example.demo.services.UserService;
+import org.apache.logging.log4j.Level;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,6 +12,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
+import java.security.Principal;
 import java.util.List;
 import java.util.UUID;
 
@@ -26,7 +28,8 @@ public class UserController {
     public UpdateUserDto updateUserDto() { return new UpdateUserDto(); }
 
     @GetMapping("/all")
-    public String showBrands(Model model) {
+    public String showUsers(Model model, Principal principal) {
+        LOG.log(Level.INFO, String.format("Show all users for %s",principal.getName()));
         model.addAttribute("showUsers", userService.findAllUsers());
         return "/user-all";
     }
@@ -52,7 +55,9 @@ public class UserController {
     }
 
     @GetMapping("/delete/{id}")
-    public String deleteBrand(@PathVariable UUID id) {
+    public String deleteBrand(@PathVariable UUID id, Principal principal) {
+        LOG.log(Level.INFO, String.format("Delete a user with nickname %s by %s",
+                        userService.findUserById(id).getUsername(), principal.getName()));
         userService.deleteUserById(id);
         return "redirect:/brands/all";
     }
