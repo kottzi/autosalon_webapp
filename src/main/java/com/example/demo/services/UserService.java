@@ -1,23 +1,23 @@
 package com.example.demo.services;
 
-import com.example.demo.dtos.UserDto;
-import com.example.demo.dtos.add.AddUserDto;
-import com.example.demo.dtos.all.ShowAllUsersDto;
-import com.example.demo.dtos.update.UpdateUserDto;
+import com.example.demo.dtos.user.UserDto;
+import com.example.demo.dtos.user.AddUserDto;
+import com.example.demo.dtos.user.UpdateUserDto;
 
 import java.util.List;
 import java.util.UUID;
 
 public interface UserService {
-    void createUser(UserDto userDto);
+    void addUser(AddUserDto addUserDto);
 
-    void addUser(AddUserDto userDto);
     void deleteUser(UserDto userDto);
     void deleteUserById(UUID id);
+    void deleteAllUsers();
 
     List<UserDto> findAllUsers();
     UserDto findUserById(UUID id);
-    List<ShowAllUsersDto> findUserByUsername(String username);
+    UserDto findUserByUsername(String username);
+    List<UserDto> findUsersByUsername(String username);
 
-    void updateUser(UpdateUserDto userDto);
+    void updateUser(UpdateUserDto updateUserDto);
 }

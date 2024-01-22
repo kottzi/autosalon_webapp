@@ -1,11 +1,7 @@
 <!DOCTYPE html>
 <html lang="ru" class="h-100" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 
-<head th:replace="fragments/head">
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
-</head>
+<head th:replace="fragments/head('Изменение пользователя | Автосалон')"/>
 
 <body class="d-flex flex-column h-100">
 <div th:replace="fragments/navbar">NAVIGATION</div>
@@ -44,6 +40,13 @@
             <small th:if="${#fields.hasErrors('lastName')}" th:errors="*{lastName}" class = "error">
                 Error message
             </small>
+
+            <div class="mb-3">
+                <label>Выберите роль:</label>
+                <select th:field="*{role.userRole}" class="form-select">
+                    <option th:each="role : ${roles}" th:value="${role.userRole}" th:text="${role.userRole}"></option>
+                </select>
+            </div>
 
             <div style="display: flex; justify-content: center;">
                 <button type="submit" class="btn btn-primary">

@@ -2,9 +2,9 @@ package com.example.demo.models.entities;
 
 import jakarta.persistence.*;
 
-import java.util.HashSet;
+import java.time.LocalDate;
 import java.util.List;
-import java.util.Set;
+import java.util.UUID;
 
 @Entity
 @Table(name = "users")
@@ -15,8 +15,10 @@ public class User extends BaseEntity {
     private String lastName;
     private boolean isActive;
     private String imageURL;
-    private UserRole role;
+
+    private Role role;
     private List<Offer> offers;
+
 
     @Column(name = "username", unique = true, nullable = false)
     public String getUsername() {
@@ -67,7 +69,34 @@ public class User extends BaseEntity {
     }
 
 
-    public User(String username, String password, String firstName, String lastName, boolean isActive, String imageURL, UserRole role, List<Offer> offers) {
+    public User(UUID id, LocalDate created, LocalDate modified, String username, String password, String firstName, String lastName, boolean isActive, String imageURL, Role role, List<Offer> offers) {
+        super.id = id;
+        super.created = created;
+        super.modified = modified;
+        this.username = username;
+        this.password = password;
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.isActive = isActive;
+        this.imageURL = imageURL;
+        this.role = role;
+        this.offers = offers;
+    }
+
+    public User(LocalDate created, LocalDate modified, String username, String password, String firstName, String lastName, boolean isActive, String imageURL, Role role, List<Offer> offers) {
+        super.created = created;
+        super.modified = modified;
+        this.username = username;
+        this.password = password;
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.isActive = isActive;
+        this.imageURL = imageURL;
+        this.role = role;
+        this.offers = offers;
+    }
+
+    public User(String username, String password, String firstName, String lastName, boolean isActive, String imageURL, Role role, List<Offer> offers) {
         this.username = username;
         this.password = password;
         this.firstName = firstName;
@@ -85,15 +114,15 @@ public class User extends BaseEntity {
         this.lastName = lastName;
         this.isActive = isActive;
     }
-
     public User() {}
+
 
     @ManyToOne(cascade = CascadeType.REFRESH)
     @JoinColumn(name = "role_id", referencedColumnName = "id")
-    public UserRole getRole() {
+    public Role getRole() {
         return role;
     }
-    public void setRole(UserRole role) {
+    public void setRole(Role role) {
         this.role = role;
     }
 

@@ -1,9 +1,8 @@
 package com.example.demo.web;
 
-import com.example.demo.dtos.BrandDto;
-import com.example.demo.dtos.add.AddBrandDto;
-import com.example.demo.dtos.all.ShowAllBrandsDto;
-import com.example.demo.dtos.update.UpdateBrandDto;
+import com.example.demo.dtos.brand.BrandDto;
+import com.example.demo.dtos.brand.AddBrandDto;
+import com.example.demo.dtos.brand.UpdateBrandDto;
 import com.example.demo.services.BrandService;
 import jakarta.validation.Valid;
 import org.apache.logging.log4j.Level;
@@ -17,6 +16,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.security.Principal;
+import java.util.Collections;
 import java.util.List;
 import java.util.UUID;
 
@@ -25,34 +25,35 @@ import java.util.UUID;
 public class BrandController {
     private BrandService brandService;
     private static final Logger LOG = LogManager.getLogger(Controller.class);
-    @Autowired
-    public void setBrandService(BrandService brandService) {this.brandService = brandService;}
-    @ModelAttribute
+
+    @ModelAttribute("addBrandDto")
     public AddBrandDto initBrand() {return new AddBrandDto();}
-    @ModelAttribute
-    public UpdateBrandDto updateBrandDto() {return new UpdateBrandDto();}
 
     @GetMapping("/add")
-    public String createBrand() {return "/brand-add";}
+    public String addBrand() {return "/brand-add";}
     @GetMapping("/all")
     public String showBrands(Model model, Principal principal) {
-        LOG.log(Level.INFO, String.format("Show all brands for %s",principal.getName()));
         model.addAttribute("showBrands", brandService.findAllBrands());
+
+        LOG.log(Level.INFO, String.format("Show all brands for %s",principal.getName()));
         return "/brand-all";
     }
 
     @PostMapping("/add")
-    public String createBrand(AddBrandDto addBrandDto, BindingResult bindingResult, RedirectAttributes redirectAttributes, Principal principal) {
-        LOG.log(Level.INFO, String.format("Add a new brand with name %s by %s",
-                addBrandDto.getName(), principal.getName()));
+    public String addBrand(@Valid AddBrandDto addBrandDto,
+                              BindingResult bindingResult,
+                              RedirectAttributes redirectAttributes,
+                              Principal principal) {
         if (bindingResult.hasErrors()) {
             redirectAttributes.addFlashAttribute("addBrandDto", addBrandDto);
             redirectAttributes.addFlashAttribute("org.springframework.validation.BindingResult.addBrandDto", bindingResult);
             return "redirect:/brands/add";
-        } else {
-            brandService.addBrand(addBrandDto);
-            return "redirect:/brands/all";
         }
+        brandService.addBrand(addBrandDto);
+
+        LOG.log(Level.INFO, String.format("Add a new brand with name %s by %s",
+                addBrandDto.getName(), principal.getName()));
+        return "redirect:/brands/all";
     }
 
     @RequestMapping("/deleteAll")
@@ -63,7 +64,7 @@ public class BrandController {
 
     @RequestMapping("/search")
     public String searchModels(@RequestParam(name = "name", required = false) String name, Model model) {
-        List<ShowAllBrandsDto> searchResults = brandService.findBrandByName(name);
+        List<BrandDto> searchResults = brandService.findBrandsByName(name);
         model.addAttribute("searchResults", searchResults);
         return "/brand-search";
     }
@@ -83,9 +84,14 @@ public class BrandController {
 
     @GetMapping("/delete/{id}")
     public String deleteBrand(@PathVariable UUID id, Principal principal) {
+        brandService.deleteBrandById(id);
+
         LOG.log(Level.INFO, String.format("Delete a brand with name %s by %s",
                 brandService.findBrandById(id).getName(), principal.getName()));
-        brandService.deleteBrandById(id);
         return "redirect:/brands/all";
     }
+
+    // Setter Injection
+    @Autowired
+    public void setBrandService(BrandService brandService) {this.brandService = brandService;}
 }

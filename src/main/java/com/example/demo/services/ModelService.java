@@ -1,20 +1,17 @@
 package com.example.demo.services;
 
 
-import com.example.demo.dtos.add.AddModelDto;
-import com.example.demo.dtos.all.ShowAllModelsDto;
-import com.example.demo.dtos.ModelDto;
-import com.example.demo.dtos.details.ShowDetailsModelsDto;
-import com.example.demo.dtos.update.UpdateModelDto;
+import com.example.demo.dtos.model.AddModelDto;
+import com.example.demo.dtos.model.ModelDto;
+import com.example.demo.dtos.model.UpdateModelDto;
 import com.example.demo.models.enums.Category;
-import org.hibernate.sql.Update;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.UUID;
 
 public interface ModelService {
-    void createModel(ModelDto modelDto);
-    void addModel(AddModelDto modelDto);
+    void addModel(AddModelDto addModelDto);
 
     void deleteModel(ModelDto modelDto);
     void deleteModelById(UUID id);
@@ -22,9 +19,8 @@ public interface ModelService {
 
     List<ModelDto> findAllModels();
     ModelDto findModelById(UUID id);
+    ModelDto findModelByName(String name);
+    List<ModelDto> findModelsByCategory(Category category);
 
-    List<ShowAllModelsDto> findModelByCategory(Category category);
-    ShowDetailsModelsDto findModelByName(String name);
-
-    void updateModel(UpdateModelDto modelDto);
+    void updateModel(UpdateModelDto updateModelDto);
 }

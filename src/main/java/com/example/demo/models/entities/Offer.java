@@ -4,6 +4,9 @@ import com.example.demo.models.enums.Engine;
 import com.example.demo.models.enums.Transmission;
 import jakarta.persistence.*;
 
+import java.time.LocalDate;
+import java.util.UUID;
+
 @Entity
 @Table(name = "offers")
 public class Offer extends BaseEntity {
@@ -14,8 +17,10 @@ public class Offer extends BaseEntity {
     private int price;
     private Transmission transmission;
     private int year;
+
     private Model model;
     private User user;
+
 
     @Column(name = "description")
     public String getDescription() {
@@ -75,6 +80,36 @@ public class Offer extends BaseEntity {
         this.year = year;
     }
 
+
+    public Offer(UUID id, LocalDate created, LocalDate modified, String description, Engine engine, String imageURL, int mileage, int price, Transmission transmission, int year, Model model, User user) {
+        super.id = id;
+        super.created = created;
+        super.modified = modified;
+        this.description = description;
+        this.engine = engine;
+        this.imageURL = imageURL;
+        this.mileage = mileage;
+        this.price = price;
+        this.transmission = transmission;
+        this.year = year;
+        this.model = model;
+        this.user = user;
+    }
+
+    public Offer(LocalDate created, LocalDate modified, String description, Engine engine, String imageURL, int mileage, int price, Transmission transmission, int year, Model model, User user) {
+        super.created = created;
+        super.modified = modified;
+        this.description = description;
+        this.engine = engine;
+        this.imageURL = imageURL;
+        this.mileage = mileage;
+        this.price = price;
+        this.transmission = transmission;
+        this.year = year;
+        this.model = model;
+        this.user = user;
+    }
+
     public Offer(String description, Engine engine, String imageURL, int mileage, int price, Transmission transmission, int year, Model model, User user) {
         this.description = description;
         this.engine = engine;
@@ -86,7 +121,18 @@ public class Offer extends BaseEntity {
         this.model = model;
         this.user = user;
     }
+
+    public Offer(String description, Engine engine, String imageURL, int mileage, int price, Transmission transmission, int year) {
+        this.description = description;
+        this.engine = engine;
+        this.imageURL = imageURL;
+        this.mileage = mileage;
+        this.price = price;
+        this.transmission = transmission;
+        this.year = year;
+    }
     public Offer() {}
+
 
     @ManyToOne(cascade = CascadeType.REFRESH)
     @JoinColumn(name = "model_id", referencedColumnName = "id")

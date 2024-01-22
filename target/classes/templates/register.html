@@ -1,11 +1,7 @@
 <!DOCTYPE html>
 <html lang="ru" class="h-100" xmlns:th="http://www.thymeleaf.org">
 
-<head th:replace="fragments/head">
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
-</head>
+<head th:replace="fragments/head('Регистрация | Автосалон')"/>
 
 <body class="d-flex flex-column h-100">
 <div th:replace="fragments/navbar">NAVIGATION</div>
@@ -22,7 +18,7 @@
                 </div>
                 <form th:action="@{/register}"
                       th:method="post"
-                      th:object="${userRegistrationDto}"
+                      th:object="${userRegistration}"
                       class="m-md-auto w-50 pb-3">
 
                     <div class="mb-3">
@@ -31,8 +27,9 @@
                                th:errorclass="is-invalid"
                                type="text" class="form-control text-center" id="username" aria-describedby="usernameHelp"
                                name="username"/>
-                        <small th:if="${#fields.hasErrors('username')}" th:errors="*{username}" class="text-danger">Error
-                            message</small>
+                        <small th:if="${#fields.hasErrors('username')}" th:errors="*{username}" class="text-danger">
+                            Error message
+                        </small>
                     </div>
 
                     <div class="mb-3">

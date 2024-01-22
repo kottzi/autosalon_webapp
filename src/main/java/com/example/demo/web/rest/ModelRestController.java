@@ -1,7 +1,7 @@
 package com.example.demo.web.rest;
 
-import com.example.demo.dtos.add.AddModelDto;
-import com.example.demo.dtos.ModelDto;
+import com.example.demo.dtos.model.AddModelDto;
+import com.example.demo.dtos.model.ModelDto;
 import com.example.demo.services.ModelService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;

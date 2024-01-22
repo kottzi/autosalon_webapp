@@ -1,7 +1,7 @@
 package com.example.demo.web.rest;
 
-import com.example.demo.dtos.add.AddBrandDto;
-import com.example.demo.dtos.BrandDto;
+import com.example.demo.dtos.brand.AddBrandDto;
+import com.example.demo.dtos.brand.BrandDto;
 import com.example.demo.services.BrandService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;

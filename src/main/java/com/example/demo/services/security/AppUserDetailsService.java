@@ -16,12 +16,11 @@ public class AppUserDetailsService implements UserDetailsService {
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        return userRepository.findByUsername(username)
-                .filter(u -> u.getIsActive())
+        return userRepository.findUserByUsername(username)
                 .map(u -> new User(
                         u.getUsername(),
                         u.getPassword(),
-                        Collections.singletonList(new SimpleGrantedAuthority(u.getRole().getRole().name()))
+                        Collections.singletonList(new SimpleGrantedAuthority(u.getRole().getUserRole().getName()))
                 )).orElseThrow(() -> new UsernameNotFoundException(username + " не найден или аккаунт не активен!"));
     }
 }

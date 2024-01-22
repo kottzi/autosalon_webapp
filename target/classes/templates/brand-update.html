@@ -1,11 +1,7 @@
 <!DOCTYPE html>
 <html lang="ru" class="h-100" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 
-<head th:replace="fragments/head">
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
-</head>
+<head th:replace="fragments/head('Изменение бренда | Автосалон')"/>
 
 <body class="d-flex flex-column h-100">
 <div th:replace="fragments/navbar">NAVIGATION</div>
@@ -18,14 +14,14 @@
                 Изменение бренда
             </h2>
             <div class="mb-3">
-                <input id="name"
-                       name="name"
-                       type="text"
-                       class="form-control" th:field="*{name}" placeholder="Введите новое название:">
+                <input th:field="*{name}"
+                       th:errorclass="is-invalid"
+                       type="text" class="form-control text-center" id="name" aria-describedby="nameHelp"
+                       name="name" placeholder="Введите новое название бренда:"/>
+                <small th:if="${#fields.hasErrors('name')}" th:errors="*{name}" class="text-danger">
+                    Error message
+                </small>
             </div>
-            <small th:if="${#fields.hasErrors('name')}" th:errors="*{name}" class = "error">
-                Error message
-            </small>
 
             <div style="display: flex; justify-content: center;">
                 <button type="submit" class="btn btn-primary">

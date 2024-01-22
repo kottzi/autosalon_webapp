@@ -1,12 +1,9 @@
 package com.example.demo.web;
 
-import com.example.demo.dtos.BrandDto;
-import com.example.demo.dtos.ModelDto;
-import com.example.demo.dtos.add.AddModelDto;
-import com.example.demo.dtos.all.ShowAllBrandsDto;
-import com.example.demo.dtos.all.ShowAllModelsDto;
-import com.example.demo.dtos.update.UpdateBrandDto;
-import com.example.demo.dtos.update.UpdateModelDto;
+import com.example.demo.dtos.brand.BrandDto;
+import com.example.demo.dtos.model.ModelDto;
+import com.example.demo.dtos.model.AddModelDto;
+import com.example.demo.dtos.model.UpdateModelDto;
 import com.example.demo.models.enums.Category;
 import com.example.demo.services.BrandService;
 import com.example.demo.services.ModelService;
@@ -14,8 +11,6 @@ import jakarta.validation.Valid;
 import org.apache.logging.log4j.Level;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import org.hibernate.sql.Update;
-import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -24,9 +19,9 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.security.Principal;
+import java.time.LocalDate;
 import java.util.List;
 import java.util.UUID;
-import java.util.stream.Collectors;
 
 @Controller
 @RequestMapping("/models")
@@ -35,48 +30,41 @@ public class ModelController {
     private BrandService brandService;
     private static final Logger LOG = LogManager.getLogger(Controller.class);
 
-    @Autowired
-    public void setModelService(ModelService modelService) {
-        this.modelService = modelService;
-    }
-    @Autowired
-    public void setBrandService(BrandService brandService) {
-        this.brandService = brandService;
-    }
-
-    @ModelAttribute
+    @ModelAttribute("addModel")
     public AddModelDto initModel() {
         return new AddModelDto();
     }
-    @ModelAttribute
-    public UpdateModelDto updateModelDto() { return new UpdateModelDto(); }
     @ModelAttribute("brands")
     List<BrandDto> findAllBrands() {return brandService.findAllBrands();}
 
     @GetMapping("/add")
-    public String createModel() {
+    public String addModel() {
         return "/model-add";
     }
 
     @GetMapping("/all")
     public String showModels(Model model, Principal principal) {
-        LOG.log(Level.INFO, String.format("Show all models for %s",principal.getName()));
         model.addAttribute("showModels", modelService.findAllModels());
+
+        LOG.log(Level.INFO, String.format("Show all models for %s",principal.getName()));
         return "/model-all";
     }
 
     @PostMapping("/add")
-    public String createModel(@Valid AddModelDto addModelDto, BindingResult bindingResult, RedirectAttributes redirectAttributes, Principal principal) {
-        LOG.log(Level.INFO, String.format("Add a new model with name %s by %s",
-                modelService.findModelByName(addModelDto.getName()), principal.getName()));
+    public String addModel(@Valid AddModelDto addModelDto,
+                           BindingResult bindingResult,
+                           RedirectAttributes redirectAttributes,
+                           Principal principal) {
         if (bindingResult.hasErrors()) {
             redirectAttributes.addFlashAttribute("addModelDto", addModelDto);
             redirectAttributes.addFlashAttribute("org.springframework.validation.BindingResult.addModelDto", bindingResult);
             return "redirect:/models/add";
-        } else {
-            modelService.addModel(addModelDto);
-            return "redirect:/models/all";
         }
+        modelService.addModel(addModelDto);
+
+        LOG.log(Level.INFO, String.format("Add a new model with name %s by %s",
+                modelService.findModelByName(addModelDto.getName()), principal.getName()));
+        return "redirect:/models/all";
     }
 
     @RequestMapping("/deleteAll")
@@ -87,15 +75,9 @@ public class ModelController {
 
     @RequestMapping("/search")
     public String searchModels(@RequestParam(name = "category", required = false) Category category, Model model) {
-        List<ShowAllModelsDto> searchResults = modelService.findModelByCategory(category);
+        List<ModelDto> searchResults = modelService.findModelsByCategory(category);
         model.addAttribute("searchResults", searchResults);
         return "/model-search";
-    }
-
-    @RequestMapping("/details/{model-name}")
-    public String modelDetails(@PathVariable("model-name") String name, Model model) {
-        model.addAttribute("modelDetails", modelService.findModelByName(name));
-        return "/model-details";
     }
 
     @GetMapping("/update/{id}")
@@ -112,10 +94,28 @@ public class ModelController {
     }
 
     @GetMapping("/delete/{id}")
-    public String deleteBrand(@PathVariable UUID id, Principal principal) {
+    public String deleteModel(@PathVariable UUID id, Principal principal) {
+        modelService.deleteModelById(id);
+
         LOG.log(Level.INFO, String.format("Delete a user with nickname %s by %s",
                 modelService.findModelById(id).getName(), principal.getName()));
-        modelService.deleteModelById(id);
         return "redirect:/models/all";
+    }
+
+    @GetMapping("/details/{id}")
+    public String showModelDetails(@PathVariable UUID id, Model model) {
+        ModelDto modelDto = modelService.findModelById(id);
+        model.addAttribute("model", modelDto);
+        return "/model-details";
+    }
+
+    // Setter Injection
+    @Autowired
+    public void setModelService(ModelService modelService) {
+        this.modelService = modelService;
+    }
+    @Autowired
+    public void setBrandService(BrandService brandService) {
+        this.brandService = brandService;
     }
 }

@@ -6,8 +6,7 @@ import jakarta.validation.ConstraintValidatorContext;
 import org.springframework.beans.factory.annotation.Autowired;
 
 public class UniqueBrandNameValidator implements ConstraintValidator<UniqueBrandName, String> {
-
-    private BrandRepository brandRepository;
+    private final BrandRepository brandRepository;
     @Autowired
     public UniqueBrandNameValidator(BrandRepository brandRepository) {
         this.brandRepository = brandRepository;
@@ -17,5 +16,4 @@ public class UniqueBrandNameValidator implements ConstraintValidator<UniqueBrand
     public boolean isValid(String name, ConstraintValidatorContext context) {
         return brandRepository.findBrandByName(name).isEmpty();
     }
-
 }

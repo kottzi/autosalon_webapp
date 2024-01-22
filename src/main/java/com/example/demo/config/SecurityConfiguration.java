@@ -1,6 +1,6 @@
 package com.example.demo.config;
 
-import com.example.demo.models.enums.Role;
+import com.example.demo.models.enums.UserRole;
 import com.example.demo.repositories.UserRepository;
 import com.example.demo.services.security.AppUserDetailsService;
 import org.springframework.boot.autoconfigure.security.servlet.PathRequest;
@@ -32,20 +32,26 @@ public class SecurityConfiguration {
                                 authorizeHttpRequests.
                                         requestMatchers(PathRequest.toStaticResources().atCommonLocations())
                                         .permitAll().
-                                        requestMatchers("/", "/login", "/register", "/login-error", "/brands/all", "/models/all")
+                                        requestMatchers("/", "/login", "/register", "/login-error",
+                                                "/brands/all", "/models/all", "/offers/all",
+                                                "/brands/search","/models/search","/offers/search")
                                         .permitAll().
-                                        requestMatchers("/profile", "/offers/all","/users/all").authenticated().
-//                                        requestMatchers("/brands/add","/brands/deleteAll","/models/add","/models/deleteAll","/offers/add","/offers/deleteAll").hasRole(Role.ADMIN.name()).
+                                        requestMatchers("/profile").authenticated().
+//                                        requestMatchers("/brands/add","/brands/deleteAll","/brands/update/**","/brands/delete/**",
+//                                                "/models/add","/models/deleteAll","/models/update/**", "/models/delete/**",
+//                                                "/offers/add","/offers/deleteAll","/offers/update/**", "/offers/delete/**",
+//                                                "/users/all", "/users/deleteAll", "/users/update/**", "/users/delete/**").
+//                                        hasRole(UserRole.ADMIN.getName()).
                                         anyRequest().authenticated()
                 )
                 .formLogin(
                         (formLogin) ->
-                                formLogin.
-                                        loginPage("/login").
-                                        usernameParameter(UsernamePasswordAuthenticationFilter.SPRING_SECURITY_FORM_USERNAME_KEY).
-                                        passwordParameter(UsernamePasswordAuthenticationFilter.SPRING_SECURITY_FORM_PASSWORD_KEY).
-                                        defaultSuccessUrl("/").
-                                        failureForwardUrl("/login-error")
+                                formLogin
+                                        .loginPage("/login")
+                                        .usernameParameter(UsernamePasswordAuthenticationFilter.SPRING_SECURITY_FORM_USERNAME_KEY)
+                                        .passwordParameter(UsernamePasswordAuthenticationFilter.SPRING_SECURITY_FORM_PASSWORD_KEY)
+                                        .defaultSuccessUrl("/")
+                                        .failureForwardUrl("/login-error")
                 )
                 .logout((logout) ->
                         logout.logoutUrl("/logout").

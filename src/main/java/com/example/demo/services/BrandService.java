@@ -1,16 +1,16 @@
 package com.example.demo.services;
 
-import com.example.demo.dtos.add.AddBrandDto;
-import com.example.demo.dtos.all.ShowAllBrandsDto;
-import com.example.demo.dtos.BrandDto;
-import com.example.demo.dtos.update.UpdateBrandDto;
+import com.example.demo.dtos.brand.AddBrandDto;
+import com.example.demo.dtos.brand.BrandDto;
+import com.example.demo.dtos.brand.UpdateBrandDto;
+import com.example.demo.models.entities.Brand;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.UUID;
 
 public interface BrandService {
-    void createBrand(BrandDto brandDto);
-    void addBrand(AddBrandDto brandDto);
+    void addBrand(AddBrandDto addBrandDto);
 
     void deleteBrand(BrandDto brandDto);
     void deleteBrandById(UUID id);
@@ -18,8 +18,8 @@ public interface BrandService {
 
     List<BrandDto> findAllBrands();
     BrandDto findBrandById(UUID id);
+    BrandDto findBrandByName(String name);
+    List<BrandDto> findBrandsByName(String name);
 
-    List<ShowAllBrandsDto> findBrandByName(String name);
-
-    void updateBrand(UpdateBrandDto brandDto);
+    void updateBrand(UpdateBrandDto updateBrandDto);
 }

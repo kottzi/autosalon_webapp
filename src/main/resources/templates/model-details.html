@@ -1,29 +1,61 @@
 <!DOCTYPE html>
-<html lang="ru" class="h-100" xmlns:th="http://www.thymeleaf.org">
+<html lang="ru" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 
-<head th:replace="fragments/head">
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
-</head>
+<head th:replace="fragments/head('Подробности модели | Автосалон')"/>
 
-<body class="d-flex flex-column h-100">
-<div th:replace="fragments/navbar">NAVIGATION</div>
+<body class="d-flex flex-column min-vh-100">
+<div th:replace="fragments/navbar" class="mb-3">NAVIGATION</div>
 
-<main>
+<main class="flex-grow-1">
     <div class="text-center align-items-center justify-content-center">
         <div class="container">
-            <h1>
-                Детали модели
-            </h1>
-                <img th:src="${modelDetails}" class="card-img-top">
-                <h3 th:text="'Название: ' + ${modelDetails.name}"></h3>
-                <h3 th:text="'Категория: ' + ${modelDetails.category}"></h3>
-                <h3 th:text="'Год выпуска: ' + ${modelDetails.startYear}"></h3>
+            <h1>Подробности модели</h1>
+            <div class="row">
+                <div class="col-md-12">
+                    <h3 th:text="${model.name}"></h3>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="text-center align-items-center justify-content-center mt-3">
+        <div class="container">
+            <div class="row align-items-center">
+                <div class="col-md-4 text-center">
+                    <img th:src="${model.imageURL}" class="img-fluid" alt="Model Photo">
+                </div>
+                <div class="col-md-8">
+                    <div class="row mt-3">
+                        <dl class="col-sm-3 text-md-right">
+                            <dt>Бренд:</dt>
+                            <dt>Категория:</dt>
+                            <dt>Год начала выпуска:</dt>
+                            <dt>Год конца выпуска:</dt>
+                        </dl>
+                        <div class="col-sm-9">
+                            <dd th:text="${model.brand.name}"></dd>
+                            <dd th:text="${model.category}"></dd>
+                            <dd th:text="${model.startYear + ' г.'}"></dd>
+                            <dd th:text="${model.endYear + ' г.'}"></dd>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row mt-3">
+                <div class="col-md-12 text-center">
+                    <a th:href="@{/models/update/{id}(id=${model.id})}" class="btn btn-primary">
+                        Изменить
+                    </a>
+                    <a th:href="@{/models/delete/{id}(id=${model.id})}" class="btn btn-danger ml-2">
+                        Удалить
+                    </a>
+                </div>
+            </div>
         </div>
     </div>
 </main>
 
-<footer th:replace="fragments/footer"></footer>
+<footer th:replace="fragments/footer" class="mt-auto"></footer>
 </body>
 </html>

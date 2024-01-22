@@ -1,33 +1,107 @@
 <!DOCTYPE html>
 <html lang="ru" class="h-100" xmlns:th="http://www.thymeleaf.org">
 
-<head th:replace="fragments/head">
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
-</head>
+<head th:replace="fragments/head('Добавление предложения | Автосалон')"/>
 
 <body class="d-flex flex-column h-100">
 <div th:replace="fragments/navbar">NAVIGATION</div>
 
 <main class="d-flex align-items-center justify-content-center" style="height: 100vh;">
     <div style="flex: 1; display: flex; flex-direction: column; align-items: center; text-align: center; max-width: 400px;">
-        <form th:action="@{/offers/add}" th:method="post" th:object="${addOfferDto}" class="mb-4">
+        <form th:action="@{/offers/add}"
+              th:method="post"
+              th:object="${addOffer}"
+              class="mb-4">
+            <h2>
+                Добавление предложения
+            </h2>
             <div class="mb-3">
                 <input th:field="*{description}"
                        th:errorclass="is-invalid"
                        type="text" class="textfield" placeholder="Описание:"/>
+                <span th:if="${#fields.hasErrors('description')}" th:errors="*{description}" class="error"></span>
             </div>
+
             <div class="mb-3">
-                <input th:field="*{description}"
-                       th:errorclass="is-invalid"
-                       type="text" class="textfield" placeholder="Описание:"/>
+                <label for="model">Выберите модель:</label>
+                <select id="model" th:field="*{model.name}" th:errorclass="is-invalid" class="form-control">
+                    <option value="" disabled selected>Выберите модель</option>
+                    <option th:each="model : ${models}"
+                            th:value="${model.name}" th:text="${model.name}">
+                    </option>
+                </select>
+                <div th:if="${#fields.hasErrors('model')}" th:errors="*{model}" class="invalid-feedback">
+                    Неверная модель
+                </div>
             </div>
+
             <div class="mb-3">
-                <input th:field="*{description}"
-                       th:errorclass="is-invalid"
-                       type="text" class="textfield" placeholder="Описание:"/>
+                <label for="user">Выберите продавца:</label>
+                <select id="user" th:field="*{user.username}" th:errorclass="is-invalid" class="form-control">
+                    <option value="" disabled selected>Выберите продавца</option>
+                    <option th:each="user : ${users}"
+                            th:value="${user.username}" th:text="${user.username}">
+                    </option>
+                </select>
+                <div th:if="${#fields.hasErrors('user')}" th:errors="*{user}" class="invalid-feedback">
+                    Неверный пользователь
+                </div>
             </div>
+
+            <div class="mb-3">
+                <input th:field="*{imageURL}"
+                       th:errorclass="is-invalid"
+                       type="text" class="textfield" placeholder="Ссылка на фото:"/>
+                <span th:if="${#fields.hasErrors('imageURL')}" th:errors="*{imageURL}" class="error"></span>
+            </div>
+
+            <div class="mb-3">
+                <label for="engine">Выберите тип двигателя:</label>
+                <select id="engine" th:field="*{engine}" th:errorclass="is-invalid" class="form-control">
+                    <option value="" disabled selected>Выберите тип двигателя</option>
+                    <option th:each="engine : ${T(com.example.demo.models.enums.Engine).values()}"
+                            th:value="${engine}" th:text="${engine.name()}">
+                    </option>
+                </select>
+                <div th:if="${#fields.hasErrors('engine')}" th:errors="*{engine}" class="invalid-feedback">
+                    Неверный тип двигателя
+                </div>
+            </div>
+
+            <div class="mb-3">
+                <label for="transmission">Выберите тип трансмиссии:</label>
+                <select id="transmission" th:field="*{transmission}" th:errorclass="is-invalid" class="form-control">
+                    <option value="" disabled selected>Выберите тип трансмиссии</option>
+                    <option th:each="transmission : ${T(com.example.demo.models.enums.Transmission).values()}"
+                            th:value="${transmission}" th:text="${transmission.name()}">
+                    </option>
+                </select>
+                <div th:if="${#fields.hasErrors('transmission')}" th:errors="*{transmission}" class="invalid-feedback">
+                    Неверный тип трансмисии
+                </div>
+            </div>
+
+            <div class="mb-3">
+                <input th:field="*{mileage}"
+                       th:errorclass="is-invalid"
+                       type="number" class="textfield" placeholder="Введите пробег:"/>
+                <span th:if="${#fields.hasErrors('mileage')}" th:errors="*{mileage}" class="error"></span>
+            </div>
+
+            <div class="mb-3">
+                <input th:field="*{year}"
+                       th:errorclass="is-invalid"
+                       type="number" class="textfield" placeholder="Введите год модели:"/>
+                <span th:if="${#fields.hasErrors('year')}" th:errors="*{year}" class="error"></span>
+            </div>
+
+            <div class="mb-3">
+                <input th:field="*{price}"
+                       th:errorclass="is-invalid"
+                       type="number" class="textfield" placeholder="Введите цену:"/>
+                <span th:if="${#fields.hasErrors('price')}" th:errors="*{price}" class="error"></span>
+            </div>
+
             <div style="display: flex; justify-content: center;">
                 <button type="submit" class="btn btn-primary">
                     Добавить предложение

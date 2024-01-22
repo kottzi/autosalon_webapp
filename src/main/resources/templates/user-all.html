@@ -1,11 +1,7 @@
 <!DOCTYPE html>
 <html lang="ru" class="h-100" xmlns:th="http://www.thymeleaf.org">
 
-<head th:replace="fragments/head">
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
-</head>
+<head th:replace="fragments/head('Все пользователи | Автосалон')"/>
 
 <body class="d-flex flex-column h-100">
 <div th:replace="fragments/navbar">NAVIGATION</div>
@@ -34,17 +30,18 @@
                         <thead>
                         <tr>
                             <th scope="col">Никнейм</th>
+                            <th scope="col">Имя и фамилия</th>
+                            <th scope="col">Роль</th>
                             <th scope="col">Действия</th>
                         </tr>
                         </thead>
                         <tbody>
                         <tr th:each="user : ${showUsers}">
                             <td th:text="${user.username}"></td>
+                            <td th:text="${user.firstName} + ' ' + ${user.lastName}"></td>
+                            <td th:text="${user.role.userRole.name()}"></td>
                             <td>
-                                <div th:sec>
-                                    <a class="btn btn-primary">
-                                        Подробнее
-                                    </a>
+                                <div>
                                     <a th:href="@{/users/update/{id}(id=${user.id})}" class="btn btn-primary">
                                         Изменить
                                     </a>

@@ -1,7 +1,7 @@
 package com.example.demo.web.rest;
 
-import com.example.demo.dtos.UserDto;
-import com.example.demo.dtos.add.AddUserDto;
+import com.example.demo.dtos.user.UserDto;
+import com.example.demo.dtos.user.AddUserDto;
 import com.example.demo.services.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
