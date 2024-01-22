@@ -49,26 +49,26 @@ public class OfferController {
     public String showOffers(Model model, Principal principal) {
         model.addAttribute("showOffers", offerService.findAllOffers());
 
-        LOG.log(Level.INFO, String.format("Show all offers for %s",principal.getName()));
+        LOG.log(Level.INFO, String.format("Show all offers for %s",
+                principal.getName()));
         return "/offer-all";
     }
 
     @PostMapping("/add")
     public String addOffer(AddOfferDto addOfferDto, Principal principal, BindingResult bindingResult, RedirectAttributes redirectAttributes) {
-//        if (bindingResult.hasErrors()) {
-//            redirectAttributes.addFlashAttribute("addOfferDto", addOfferDto);
-//            redirectAttributes.addFlashAttribute("org.springframework.validation.BindingResult.addOfferDto", bindingResult);
-//            return "redirect:/offers/add";
-//        }
         offerService.addOffer(addOfferDto);
 
-        LOG.log(Level.INFO, String.format("Add a new offer by %s", principal.getName()));
+        LOG.log(Level.INFO, String.format("Add a new offer by %s",
+                principal.getName()));
         return "redirect:/offers/all";
     }
 
     @RequestMapping("/deleteAll")
-    public String deleteAllOffers() {
+    public String deleteAllOffers(Principal principal) {
         offerService.deleteAllOffers();
+
+        LOG.log(Level.INFO, String.format("Deleted all offers by %s",
+                principal.getName()));
         return "redirect:/offers/all";
     }
 
@@ -80,8 +80,9 @@ public class OfferController {
     }
 
     @PostMapping("/update")
-    public String updateOffer(@ModelAttribute UpdateOfferDto updateOfferDto) {
+    public String updateOffer(@ModelAttribute UpdateOfferDto updateOfferDto, Principal principal) {
         offerService.updateOffer(updateOfferDto);
+
         return "redirect:/offers/all";
     }
 
@@ -89,7 +90,8 @@ public class OfferController {
     public String deleteOffer(@PathVariable UUID id, Principal principal) {
         offerService.deleteOfferById(id);
 
-        LOG.log(Level.INFO, String.format("Delete an offer by %s", principal.getName()));
+        LOG.log(Level.INFO, String.format("Delete an offer by %s",
+                principal.getName()));
         return "redirect:/offers/all";
     }
 

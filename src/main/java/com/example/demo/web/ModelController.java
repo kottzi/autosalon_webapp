@@ -46,7 +46,8 @@ public class ModelController {
     public String showModels(Model model, Principal principal) {
         model.addAttribute("showModels", modelService.findAllModels());
 
-        LOG.log(Level.INFO, String.format("Show all models for %s",principal.getName()));
+        LOG.log(Level.INFO, String.format("Show all models for %s",
+                principal.getName()));
         return "/model-all";
     }
 
@@ -62,14 +63,17 @@ public class ModelController {
         }
         modelService.addModel(addModelDto);
 
-        LOG.log(Level.INFO, String.format("Add a new model with name %s by %s",
+        LOG.log(Level.INFO, String.format("Add a new model with name (%s) by %s",
                 modelService.findModelByName(addModelDto.getName()), principal.getName()));
         return "redirect:/models/all";
     }
 
     @RequestMapping("/deleteAll")
-    public String deleteAllModels() {
+    public String deleteAllModels(Principal principal) {
         modelService.deleteAllModels();
+
+        LOG.log(Level.INFO, String.format("Deleted all models by %s",
+                principal.getName()));
         return "redirect:/models/all";
     }
 
@@ -88,8 +92,11 @@ public class ModelController {
     }
 
     @PostMapping("/update")
-    public String updateModel(@ModelAttribute UpdateModelDto updateModelDto) {
+    public String updateModel(@ModelAttribute UpdateModelDto updateModelDto, Principal principal) {
         modelService.updateModel(updateModelDto);
+
+        LOG.log(Level.INFO, String.format("Update a model (%s) by %s",
+                modelService.findModelByName(updateModelDto.getName()), principal.getName()));
         return "redirect:/models/all";
     }
 
@@ -97,15 +104,16 @@ public class ModelController {
     public String deleteModel(@PathVariable UUID id, Principal principal) {
         modelService.deleteModelById(id);
 
-        LOG.log(Level.INFO, String.format("Delete a user with nickname %s by %s",
+        LOG.log(Level.INFO, String.format("Delete a model with name (%s) by %s",
                 modelService.findModelById(id).getName(), principal.getName()));
         return "redirect:/models/all";
     }
 
     @GetMapping("/details/{id}")
-    public String showModelDetails(@PathVariable UUID id, Model model) {
+    public String showModelDetails(@PathVariable UUID id, Model model, Principal principal) {
         ModelDto modelDto = modelService.findModelById(id);
         model.addAttribute("model", modelDto);
+
         return "/model-details";
     }
 

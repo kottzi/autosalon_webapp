@@ -35,7 +35,8 @@ public class UserController {
     public String showUsers(Model model, Principal principal) {
         model.addAttribute("showUsers", userService.findAllUsers());
 
-        LOG.log(Level.INFO, String.format("Show all users for %s", principal.getName()));
+        LOG.log(Level.INFO, String.format("Show all users for %s",
+                principal.getName()));
         return "/user-all";
     }
 
@@ -54,10 +55,23 @@ public class UserController {
     }
 
     @PostMapping("/update")
-    public String updateUser(@ModelAttribute UpdateUserDto updateUserDto) {
+    public String updateUser(@ModelAttribute UpdateUserDto updateUserDto, Principal principal) {
         userService.updateUser(updateUserDto);
+
+        LOG.log(Level.INFO, String.format("Update a user with nickname (%s) by %s",
+               userService.findUserByUsername(updateUserDto.getUsername()), principal.getName()));
         return "redirect:/users/all";
     }
+
+    @GetMapping("/deleteAll")
+    public String deleteAllUsers(Principal principal) {
+        userService.deleteAllUsers();
+
+        LOG.log(Level.INFO, String.format("Deleted all users by %s",
+                principal.getName()));
+        return "redirect:/users/all";
+    }
+
 
     @GetMapping("/delete/{id}")
     public String deleteBrand(@PathVariable UUID id, Principal principal) {

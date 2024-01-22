@@ -16,7 +16,6 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.security.Principal;
-import java.util.Collections;
 import java.util.List;
 import java.util.UUID;
 
@@ -35,7 +34,8 @@ public class BrandController {
     public String showBrands(Model model, Principal principal) {
         model.addAttribute("showBrands", brandService.findAllBrands());
 
-        LOG.log(Level.INFO, String.format("Show all brands for %s",principal.getName()));
+        LOG.log(Level.INFO, String.format("Show all brands for %s",
+                principal.getName()));
         return "/brand-all";
     }
 
@@ -51,14 +51,17 @@ public class BrandController {
         }
         brandService.addBrand(addBrandDto);
 
-        LOG.log(Level.INFO, String.format("Add a new brand with name %s by %s",
-                addBrandDto.getName(), principal.getName()));
+        LOG.log(Level.INFO, String.format("Add a new brand with name (%s) by %s",
+                brandService.findBrandByName(addBrandDto.getName()), principal.getName()));
         return "redirect:/brands/all";
     }
 
     @RequestMapping("/deleteAll")
-    public String deleteAllBrands() {
+    public String deleteAllBrands(Principal principal) {
         brandService.deleteAllBrands();
+
+        LOG.log(Level.INFO, String.format("Deleted all brands by %s",
+                principal.getName()));
         return "redirect:/brands/all";
     }
 
@@ -77,8 +80,11 @@ public class BrandController {
     }
 
     @PostMapping("/update")
-    public String updateBrand(@ModelAttribute UpdateBrandDto updateBrandDto) {
+    public String updateBrand(@ModelAttribute UpdateBrandDto updateBrandDto, Principal principal) {
         brandService.updateBrand(updateBrandDto);
+
+        LOG.log(Level.INFO, String.format("Update a brand (%s) by %s",
+                brandService.findBrandByName(updateBrandDto.getName()), principal.getName()));
         return "redirect:/brands/all";
     }
 
@@ -86,7 +92,7 @@ public class BrandController {
     public String deleteBrand(@PathVariable UUID id, Principal principal) {
         brandService.deleteBrandById(id);
 
-        LOG.log(Level.INFO, String.format("Delete a brand with name %s by %s",
+        LOG.log(Level.INFO, String.format("Delete a brand with name (%s) by %s",
                 brandService.findBrandById(id).getName(), principal.getName()));
         return "redirect:/brands/all";
     }
