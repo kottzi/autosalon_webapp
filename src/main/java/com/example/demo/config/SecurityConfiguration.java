@@ -34,14 +34,14 @@ public class SecurityConfiguration {
                                         .permitAll().
                                         requestMatchers("/", "/login", "/register", "/login-error",
                                                 "/brands/all", "/models/all", "/offers/all",
-                                                "/brands/search","/models/search","/offers/search")
-                                        .permitAll().
-                                        requestMatchers("/profile").authenticated().
-//                                        requestMatchers("/brands/add","/brands/deleteAll","/brands/update/**","/brands/delete/**",
-//                                                "/models/add","/models/deleteAll","/models/update/**", "/models/delete/**",
-//                                                "/offers/add","/offers/deleteAll","/offers/update/**", "/offers/delete/**",
-//                                                "/users/all", "/users/deleteAll", "/users/update/**", "/users/delete/**").
-//                                        hasRole(UserRole.ADMIN.getName()).
+                                                "/brands/search","/models/search","/offers/search",
+                                                "/img/homeLogo.jpg").permitAll()
+                                        .requestMatchers("/profile").authenticated().
+                                        requestMatchers("/brands/add","/brands/deleteAll","/brands/update/**","/brands/delete/**",
+                                                "/models/add","/models/deleteAll","/models/update/**", "/models/delete/**",
+                                                "/offers/add","/offers/deleteAll","/offers/update/**", "/offers/delete/**",
+                                                "/users/all", "/users/deleteAll", "/users/update/**", "/users/delete/**").
+                                        hasAuthority(UserRole.ADMIN.getName()).
                                         anyRequest().authenticated()
                 )
                 .formLogin(

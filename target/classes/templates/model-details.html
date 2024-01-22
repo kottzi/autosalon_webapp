@@ -35,14 +35,14 @@
                         <div class="col-sm-9">
                             <dd th:text="${model.brand.name}"></dd>
                             <dd th:text="${model.category}"></dd>
-                            <dd th:text="${model.startYear}"></dd>
-                            <dd th:text="${model.endYear}"></dd>
+                            <dd th:text="${model.startYear + ' г.'}"></dd>
+                            <dd th:text="${model.endYear + ' г.'}"></dd>
                         </div>
                     </div>
                 </div>
             </div>
 
-            <div class="row mt-3">
+            <div class="row mt-3" sec:authorize="hasAuthority('ADMIN')">
                 <div class="col-md-12 text-center">
                     <a th:href="@{/models/update/{id}(id=${model.id})}" class="btn btn-primary">
                         Изменить

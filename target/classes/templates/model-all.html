@@ -40,7 +40,7 @@
                     </div>
                 </li>
             </ul>
-            <div class="mt-3">
+            <div class="mt-3" sec:authorize="hasAuthority('ADMIN')">
                 <a th:href="@{/models/add}" class="btn btn-primary">
                     Добавить модель
                 </a>
