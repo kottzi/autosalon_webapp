@@ -6,11 +6,11 @@ import com.example.demo.dtos.offer.UpdateOfferDto;
 import com.example.demo.models.entities.Model;
 import com.example.demo.models.entities.Offer;
 import com.example.demo.models.entities.User;
-import com.example.demo.models.enums.UserRole;
 import com.example.demo.repositories.ModelRepository;
 import com.example.demo.repositories.OfferRepository;
 import com.example.demo.repositories.UserRepository;
 import com.example.demo.services.OfferService;
+import com.example.demo.exceptions.OfferNotFoundException;
 import org.modelmapper.ModelMapper;
 import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.Cacheable;
@@ -24,6 +24,7 @@ import java.util.UUID;
 import java.util.stream.Collectors;
 
 @Service
+//@EnableCaching
 public class OfferServiceImpl implements OfferService {
     private final OfferRepository offerRepository;
     private final ModelRepository modelRepository;
@@ -37,7 +38,7 @@ public class OfferServiceImpl implements OfferService {
         this.modelMapper = modelMapper;
     }
 
-    @CacheEvict(cacheNames = "offers", allEntries = true)
+    @CacheEvict(value = "offers", allEntries = true)
     @Override
     public void addOffer(AddOfferDto addOfferDto) {
         Offer offer = modelMapper.map(addOfferDto, Offer.class);
@@ -53,19 +54,19 @@ public class OfferServiceImpl implements OfferService {
         offerRepository.saveAndFlush(offer);
     }
 
-    @CacheEvict(cacheNames = "offers", allEntries = true)
+    @CacheEvict(value = "offers", allEntries = true)
     @Override
     public void deleteOffer(OfferDto offerDto) {
         offerRepository.deleteById(offerDto.getId());
     }
 
-    @CacheEvict(cacheNames = "offers", allEntries = true)
+    @CacheEvict(value = "offers", allEntries = true)
     @Override
     public void deleteOfferById(UUID id) {
         offerRepository.deleteById(id);
     }
 
-    @CacheEvict(cacheNames = "offers", allEntries = true)
+    @CacheEvict(value = "offers", allEntries = true)
     @Override
     public void deleteAllOffers() {offerRepository.deleteAll();}
 
@@ -77,7 +78,7 @@ public class OfferServiceImpl implements OfferService {
 
     @Override
     public OfferDto findOfferById(UUID id) {
-        return Optional.ofNullable(modelMapper.map(offerRepository.findById(id), OfferDto.class)).orElseThrow();
+        return Optional.ofNullable(modelMapper.map(offerRepository.findById(id), OfferDto.class)).orElseThrow(() -> new OfferNotFoundException(id));
     }
 
     @Override
@@ -92,7 +93,7 @@ public class OfferServiceImpl implements OfferService {
                 modelMapper.map(s, OfferDto.class)).collect(Collectors.toList());
     }
 
-    @CacheEvict(cacheNames = "offers", allEntries = true)
+    @CacheEvict(value = "offers", allEntries = true)
     @Override
     public void updateOffer(UpdateOfferDto updateOfferDto) {
         Optional<Offer> optionalOffer = offerRepository.findById(updateOfferDto.getId());

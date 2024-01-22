@@ -5,10 +5,11 @@ import com.example.demo.dtos.model.ModelDto;
 import com.example.demo.models.enums.Engine;
 import com.example.demo.models.enums.Transmission;
 
+import java.io.Serializable;
 import java.time.LocalDate;
 import java.util.UUID;
 
-public class OfferDto {
+public class OfferDto implements Serializable {
     private UUID id;
     private LocalDate created;
     private LocalDate modified;

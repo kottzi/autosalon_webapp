@@ -2,6 +2,7 @@ package com.example.demo.web.rest;
 
 import com.example.demo.dtos.role.RoleDto;
 import com.example.demo.dtos.role.AddRoleDto;
+import com.example.demo.dtos.role.UpdateRoleDto;
 import com.example.demo.services.RoleService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -25,11 +26,13 @@ public class RoleRestController {
     }
 
     @PostMapping
-    void createRole(@RequestBody AddRoleDto roleDto) {roleService.addRole(roleDto);}
+    void createRole(@RequestBody AddRoleDto addRoleDto) {roleService.addRole(addRoleDto);}
 
     @PutMapping
-    void updateRole(@RequestBody AddRoleDto roleDto) {roleService.addRole(roleDto);}
+    void updateRole(@RequestBody UpdateRoleDto updateRoleDto) {roleService.updateRole(updateRoleDto);}
 
+    @DeleteMapping
+    void deleteAllRoles() {roleService.deleteAllRoles();}
     @DeleteMapping("/{id}")
     void deleteRole(@PathVariable UUID id) {roleService.deleteRoleById(id);}
 }

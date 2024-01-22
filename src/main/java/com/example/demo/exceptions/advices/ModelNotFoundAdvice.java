@@ -1,6 +1,6 @@
-package com.example.demo.web.advices;
+package com.example.demo.exceptions.advices;
 
-import com.example.demo.web.exceptions.ModelNotFoundException;
+import com.example.demo.exceptions.ModelNotFoundException;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;

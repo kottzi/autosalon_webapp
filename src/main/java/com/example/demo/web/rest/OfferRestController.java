@@ -2,6 +2,7 @@ package com.example.demo.web.rest;
 
 import com.example.demo.dtos.offer.AddOfferDto;
 import com.example.demo.dtos.offer.OfferDto;
+import com.example.demo.dtos.offer.UpdateOfferDto;
 import com.example.demo.services.OfferService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -25,11 +26,13 @@ public class OfferRestController {
     }
 
     @PostMapping
-    void createOffer(@RequestBody AddOfferDto offerDto) {offerService.addOffer(offerDto);}
+    void createOffer(@RequestBody AddOfferDto addOfferDto) {offerService.addOffer(addOfferDto);}
 
     @PutMapping
-    void updateOffer(@RequestBody AddOfferDto offerDto) {offerService.addOffer(offerDto);}
+    void updateOffer(@RequestBody UpdateOfferDto updateOfferDto) {offerService.updateOffer(updateOfferDto);}
 
+    @DeleteMapping
+    void deleteAllOffers() {offerService.deleteAllOffers();}
     @DeleteMapping("/{id}")
     void deleteOffer(@PathVariable UUID id) {offerService.deleteOfferById(id);}
 }

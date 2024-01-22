@@ -3,11 +3,12 @@ package com.example.demo.dtos.role;
 import com.example.demo.dtos.user.UserDto;
 import com.example.demo.models.enums.UserRole;
 
+import java.io.Serializable;
 import java.time.LocalDate;
 import java.util.List;
 import java.util.UUID;
 
-public class RoleDto {
+public class RoleDto implements Serializable {
     private UUID id;
     private LocalDate created;
     private LocalDate modified;

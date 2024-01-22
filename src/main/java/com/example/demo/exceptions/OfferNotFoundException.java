@@ -1,4 +1,4 @@
-package com.example.demo.web.exceptions;
+package com.example.demo.exceptions;
 
 import java.util.UUID;
 

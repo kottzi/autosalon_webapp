@@ -1,6 +1,5 @@
 package com.example.demo.services.impl;
 
-import com.example.demo.dtos.brand.BrandDto;
 import com.example.demo.dtos.user.UserDto;
 import com.example.demo.dtos.user.AddUserDto;
 import com.example.demo.dtos.user.UpdateUserDto;
@@ -9,6 +8,7 @@ import com.example.demo.models.entities.User;
 import com.example.demo.repositories.RoleRepository;
 import com.example.demo.repositories.UserRepository;
 import com.example.demo.services.UserService;
+import com.example.demo.exceptions.UserNotFoundException;
 import org.modelmapper.ModelMapper;
 import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.Cacheable;
@@ -22,6 +22,7 @@ import java.util.UUID;
 import java.util.stream.Collectors;
 
 @Service
+//@EnableCaching
 public class UserServiceImpl implements UserService {
     private final UserRepository userRepository;
     private final RoleRepository roleRepository;
@@ -33,7 +34,7 @@ public class UserServiceImpl implements UserService {
         this.modelMapper = modelMapper;
     }
 
-    @CacheEvict(cacheNames = "users", allEntries = true)
+    @CacheEvict(value = "users", allEntries = true)
     @Override
     public void addUser(AddUserDto userDto) {
         User user = modelMapper.map(userDto, User.class);
@@ -45,19 +46,19 @@ public class UserServiceImpl implements UserService {
         userRepository.saveAndFlush(user);
     }
 
-    @CacheEvict(cacheNames = "users", allEntries = true)
+    @CacheEvict(value = "users", allEntries = true)
     @Override
     public void deleteUser(UserDto userDto) {
         userRepository.deleteById(userDto.getId());
     }
 
-    @CacheEvict(cacheNames = "users", allEntries = true)
+    @CacheEvict(value = "users", allEntries = true)
     @Override
     public void deleteUserById(UUID id) {
         userRepository.deleteById(id);
     }
 
-    @CacheEvict(cacheNames = "users", allEntries = true)
+    @CacheEvict(value = "users", allEntries = true)
     @Override
     public void deleteAllUsers() { userRepository.deleteAll(); }
 
@@ -69,7 +70,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public UserDto findUserById(UUID id) {
-        return Optional.ofNullable(modelMapper.map(userRepository.findById(id), UserDto.class)).orElseThrow();
+        return Optional.ofNullable(modelMapper.map(userRepository.findById(id), UserDto.class)).orElseThrow(() -> new UserNotFoundException(id));
     }
 
     @Override
@@ -83,7 +84,7 @@ public class UserServiceImpl implements UserService {
                 modelMapper.map(s, UserDto.class)).collect(Collectors.toList());
     }
 
-    @CacheEvict(cacheNames = "users", allEntries = true)
+    @CacheEvict(value = "users", allEntries = true)
     @Override
     public void updateUser(UpdateUserDto updateUserDto) {
         Optional<User> optionalUser = userRepository.findById(updateUserDto.getId());

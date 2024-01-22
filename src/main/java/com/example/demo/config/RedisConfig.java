@@ -1,5 +1,8 @@
 package com.example.demo.config;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -32,14 +35,21 @@ public class RedisConfig {
 
         return RedisCacheManager.builder(redisConnectionFactory())
                 .cacheDefaults(cacheConfig)
-                .withCacheConfiguration("users", myDefaultCacheConfig(Duration.ofMinutes(5)))
+                .withCacheConfiguration("brands", myDefaultCacheConfig(Duration.ofMinutes(10)).disableCachingNullValues())
+                .withCacheConfiguration("models", myDefaultCacheConfig(Duration.ofMinutes(10)).disableCachingNullValues())
+                .withCacheConfiguration("users", myDefaultCacheConfig(Duration.ofMinutes(5)).disableCachingNullValues())
+                .withCacheConfiguration("offers", myDefaultCacheConfig(Duration.ofMinutes(5)).disableCachingNullValues()      )
                 .build();
     }
 
-    private RedisCacheConfiguration myDefaultCacheConfig(Duration duration) {
+    @Bean
+    public RedisCacheConfiguration myDefaultCacheConfig(Duration duration) {
+        ObjectMapper objectMapper = new ObjectMapper();
+        objectMapper.registerModule(new JavaTimeModule());
+
         return RedisCacheConfiguration
                 .defaultCacheConfig()
                 .entryTtl(duration)
-                .serializeValuesWith(RedisSerializationContext.SerializationPair.fromSerializer(new GenericJackson2JsonRedisSerializer()));
+                .serializeValuesWith(RedisSerializationContext.SerializationPair.fromSerializer(new GenericJackson2JsonRedisSerializer(objectMapper)));
     }
 }

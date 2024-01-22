@@ -1,5 +1,7 @@
 package com.example.demo.web.rest;
 
+import com.example.demo.dtos.role.UpdateRoleDto;
+import com.example.demo.dtos.user.UpdateUserDto;
 import com.example.demo.dtos.user.UserDto;
 import com.example.demo.dtos.user.AddUserDto;
 import com.example.demo.services.UserService;
@@ -25,11 +27,13 @@ public class UserRestController {
     }
 
     @PostMapping
-    void createUser(@RequestBody AddUserDto userDto) {userService.addUser(userDto);}
+    void createUser(@RequestBody AddUserDto addUserDto) {userService.addUser(addUserDto);}
 
     @PutMapping
-    void updateUser(@RequestBody AddUserDto userDto) {userService.addUser(userDto);}
+    void updateUser(@RequestBody UpdateUserDto updateUserDto) {userService.updateUser(updateUserDto);}
 
+    @DeleteMapping
+    void deleteAllUsers() {userService.deleteAllUsers();}
     @DeleteMapping("/{id}")
     void deleteUser(@PathVariable UUID id) {userService.deleteUserById(id);}
 }

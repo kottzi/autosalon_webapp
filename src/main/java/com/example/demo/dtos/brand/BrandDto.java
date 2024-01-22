@@ -2,11 +2,12 @@ package com.example.demo.dtos.brand;
 
 import com.example.demo.dtos.model.ModelDto;
 
+import java.io.Serializable;
 import java.time.LocalDate;
 import java.util.List;
 import java.util.UUID;
 
-public class BrandDto {
+public class BrandDto implements Serializable {
     private UUID id;
     private LocalDate created;
     private LocalDate modified;

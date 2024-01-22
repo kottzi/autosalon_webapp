@@ -6,6 +6,7 @@ import com.example.demo.dtos.brand.UpdateBrandDto;
 import com.example.demo.models.entities.Brand;
 import com.example.demo.repositories.BrandRepository;
 import com.example.demo.services.BrandService;
+import com.example.demo.exceptions.BrandNotFoundException;
 import org.modelmapper.ModelMapper;
 import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.Cacheable;
@@ -19,6 +20,7 @@ import java.util.UUID;
 import java.util.stream.Collectors;
 
 @Service
+//@EnableCaching
 public class BrandServiceImpl implements BrandService {
     private final BrandRepository brandRepository;
     private final ModelMapper modelMapper;
@@ -28,7 +30,7 @@ public class BrandServiceImpl implements BrandService {
         this.modelMapper = modelMapper;
     }
 
-    @CacheEvict(cacheNames = "brands", allEntries = true)
+    @CacheEvict(value = "brands", allEntries = true)
     @Override
     public void addBrand(AddBrandDto addBrandDto) {
         Brand brand = modelMapper.map(addBrandDto, Brand.class);
@@ -37,19 +39,19 @@ public class BrandServiceImpl implements BrandService {
         brandRepository.saveAndFlush(brand);
     }
 
-    @CacheEvict(cacheNames = "brands", allEntries = true)
+    @CacheEvict(value = "brands", allEntries = true)
     @Override
     public void deleteBrand(BrandDto brandDto) {
         brandRepository.deleteById(brandDto.getId());
     }
 
-    @CacheEvict(cacheNames = "brands", allEntries = true)
+    @CacheEvict(value = "brands", allEntries = true)
     @Override
     public void deleteBrandById(UUID id) {
         brandRepository.deleteById(id);
     }
 
-    @CacheEvict(cacheNames = "brands", allEntries = true)
+    @CacheEvict(value = "brands", allEntries = true)
     @Override
     public void deleteAllBrands() {brandRepository.deleteAll();}
 
@@ -61,7 +63,7 @@ public class BrandServiceImpl implements BrandService {
 
     @Override
     public BrandDto findBrandById(UUID id) {
-        return Optional.ofNullable(modelMapper.map(brandRepository.findById(id), BrandDto.class)).orElseThrow();
+        return Optional.ofNullable(modelMapper.map(brandRepository.findById(id), BrandDto.class)).orElseThrow(() -> new BrandNotFoundException(id));
     }
 
     @Override
@@ -75,7 +77,7 @@ public class BrandServiceImpl implements BrandService {
                 modelMapper.map(s, BrandDto.class)).collect(Collectors.toList());
     }
 
-    @CacheEvict(cacheNames = "brands", allEntries = true)
+    @CacheEvict(value = "brands", allEntries = true)
     @Override
     public void updateBrand(UpdateBrandDto updateBrandDto) {
         Optional<Brand> optionalBrand = brandRepository.findById(updateBrandDto.getId());

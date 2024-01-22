@@ -1,6 +1,6 @@
-package com.example.demo.web.advices;
+package com.example.demo.exceptions.advices;
 
-import com.example.demo.web.exceptions.BrandNotFoundException;
+import com.example.demo.exceptions.RoleNotFoundException;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -8,11 +8,11 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.ResponseStatus;
 
 @ControllerAdvice
-public class BrandNotFoundAdvice {
+public class RoleNotFoundAdvice {
     @ResponseBody
-    @ExceptionHandler(BrandNotFoundException.class)
+    @ExceptionHandler(RoleNotFoundException.class)
     @ResponseStatus(HttpStatus.NOT_FOUND)
-    String brandNotFoundHandler(BrandNotFoundException ex) {
+    String userRoleNotFoundHandler(RoleNotFoundException ex) {
         return ex.getMessage();
     }
 }

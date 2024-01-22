@@ -4,11 +4,12 @@ import com.example.demo.dtos.offer.OfferDto;
 import com.example.demo.dtos.brand.BrandDto;
 import com.example.demo.models.enums.Category;
 
+import java.io.Serializable;
 import java.time.LocalDate;
 import java.util.List;
 import java.util.UUID;
 
-public class ModelDto {
+public class ModelDto implements Serializable {
     private UUID id;
     private LocalDate created;
     private LocalDate modified;

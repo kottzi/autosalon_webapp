@@ -2,6 +2,7 @@ package com.example.demo.web.rest;
 
 import com.example.demo.dtos.brand.AddBrandDto;
 import com.example.demo.dtos.brand.BrandDto;
+import com.example.demo.dtos.brand.UpdateBrandDto;
 import com.example.demo.services.BrandService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -25,11 +26,13 @@ public class BrandRestController {
     }
 
     @PostMapping
-    void createBrand(@RequestBody AddBrandDto brandDto) {brandService.addBrand(brandDto);}
+    void addBrand(@RequestBody AddBrandDto addBrandDto) {brandService.addBrand(addBrandDto);}
 
     @PutMapping
-    void updateBrand(@RequestBody AddBrandDto brandDto) {brandService.addBrand(brandDto);}
+    void updateBrand(@RequestBody UpdateBrandDto updateBrandDtoe) {brandService.updateBrand(updateBrandDtoe);}
 
+    @DeleteMapping
+    void deleteAllBrands() {brandService.deleteAllBrands();}
     @DeleteMapping("/{id}")
     void deleteBrand(@PathVariable UUID id) {brandService.deleteBrandById(id);}
 }

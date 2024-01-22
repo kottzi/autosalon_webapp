@@ -1,6 +1,5 @@
 package com.example.demo.services.impl;
 
-import com.example.demo.dtos.brand.BrandDto;
 import com.example.demo.dtos.model.AddModelDto;
 import com.example.demo.dtos.model.ModelDto;
 import com.example.demo.dtos.model.UpdateModelDto;
@@ -10,6 +9,7 @@ import com.example.demo.models.enums.Category;
 import com.example.demo.repositories.BrandRepository;
 import com.example.demo.repositories.ModelRepository;
 import com.example.demo.services.ModelService;
+import com.example.demo.exceptions.ModelNotFoundException;
 import org.modelmapper.ModelMapper;
 import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.Cacheable;
@@ -23,6 +23,7 @@ import java.util.UUID;
 import java.util.stream.Collectors;
 
 @Service
+//@EnableCaching
 public class ModelServiceImpl implements ModelService {
     private final ModelRepository modelRepository;
     private final BrandRepository brandRepository;
@@ -34,7 +35,7 @@ public class ModelServiceImpl implements ModelService {
         this.modelMapper = modelMapper;
     }
 
-    @CacheEvict(cacheNames = "models", allEntries = true)
+    @CacheEvict(value = "models", allEntries = true)
     @Override
     public void addModel(AddModelDto addModelDto) {
         Model model = modelMapper.map(addModelDto, Model.class);
@@ -46,19 +47,19 @@ public class ModelServiceImpl implements ModelService {
         modelRepository.saveAndFlush(model);
     }
 
-    @CacheEvict(cacheNames = "models", allEntries = true)
+    @CacheEvict(value = "models", allEntries = true)
     @Override
     public void deleteModel(ModelDto modelDto) {
         modelRepository.deleteById(modelDto.getId());
     }
 
-    @CacheEvict(cacheNames = "models", allEntries = true)
+    @CacheEvict(value = "models", allEntries = true)
     @Override
     public void deleteModelById(UUID id) {
         modelRepository.deleteById(id);
     }
 
-    @CacheEvict(cacheNames = "models", allEntries = true)
+    @CacheEvict(value = "models", allEntries = true)
     @Override
     public void deleteAllModels() {modelRepository.deleteAll();}
 
@@ -70,7 +71,7 @@ public class ModelServiceImpl implements ModelService {
 
     @Override
     public ModelDto findModelById(UUID id) {
-        return Optional.ofNullable(modelMapper.map(modelRepository.findById(id), ModelDto.class)).orElseThrow();
+        return Optional.ofNullable(modelMapper.map(modelRepository.findById(id), ModelDto.class)).orElseThrow(() -> new ModelNotFoundException(id));
     }
 
     @Override
@@ -84,7 +85,7 @@ public class ModelServiceImpl implements ModelService {
                 modelMapper.map(s, ModelDto.class)).collect(Collectors.toList());
     }
 
-    @CacheEvict(cacheNames = "models", allEntries = true)
+    @CacheEvict(value = "models", allEntries = true)
     @Override
     public void updateModel(UpdateModelDto updateModelDto) {
         Optional<Model> optionalModel = modelRepository.findById(updateModelDto.getId());

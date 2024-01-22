@@ -2,6 +2,7 @@ package com.example.demo.web.rest;
 
 import com.example.demo.dtos.model.AddModelDto;
 import com.example.demo.dtos.model.ModelDto;
+import com.example.demo.dtos.model.UpdateModelDto;
 import com.example.demo.services.ModelService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -25,11 +26,13 @@ public class ModelRestController {
     }
 
     @PostMapping
-    void createModel(@RequestBody AddModelDto modelDto) {modelService.addModel(modelDto);}
+    void addModel(@RequestBody AddModelDto addModelDto) {modelService.addModel(addModelDto);}
 
     @PutMapping
-    void updateModel(@RequestBody AddModelDto modelDto) {modelService.addModel(modelDto);}
+    void updateModel(@RequestBody UpdateModelDto updateModelDto) {modelService.updateModel(updateModelDto);}
 
+    @DeleteMapping
+    void deleteAllModels() {modelService.deleteAllModels();}
     @DeleteMapping("/{id}")
     void deleteModel(@PathVariable UUID id) {modelService.deleteModelById(id);}
 }

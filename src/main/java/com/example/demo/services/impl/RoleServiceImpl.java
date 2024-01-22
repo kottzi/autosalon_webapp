@@ -1,13 +1,12 @@
 package com.example.demo.services.impl;
 
-import com.example.demo.dtos.brand.UpdateBrandDto;
 import com.example.demo.dtos.role.AddRoleDto;
 import com.example.demo.dtos.role.RoleDto;
 import com.example.demo.dtos.role.UpdateRoleDto;
-import com.example.demo.models.entities.Brand;
 import com.example.demo.models.entities.Role;
 import com.example.demo.repositories.RoleRepository;
 import com.example.demo.services.RoleService;
+import com.example.demo.exceptions.RoleNotFoundException;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
 
@@ -16,6 +15,7 @@ import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 import java.util.stream.Collectors;
+
 @Service
 public class RoleServiceImpl implements RoleService {
     private final RoleRepository roleRepository;
@@ -54,7 +54,7 @@ public class RoleServiceImpl implements RoleService {
 
     @Override
     public RoleDto findRoleById(UUID id) {
-        return Optional.ofNullable(modelMapper.map(roleRepository.findById(id), RoleDto.class)).orElseThrow();
+        return Optional.ofNullable(modelMapper.map(roleRepository.findById(id), RoleDto.class)).orElseThrow(() -> new RoleNotFoundException(id));
     }
 
     @Override
