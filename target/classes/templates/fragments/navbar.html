@@ -1,8 +1,6 @@
 <nav class="navbar navbar-expand-lg navbar-dark bg-dark justify-content-between" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
-    <div class="navbar align-items-start"></div>
-
-    <div class="navbar align-items-center" id="navbarNavAltMarkup">
-        <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+    <div class="navbar align-items-start">
+        <ul class="navbar-nav">
             <li class="nav-item">
                 <a class="nav-item nav-link text-light" href="/">Главная</a>
             </li>
@@ -20,9 +18,9 @@
             </li>
         </ul>
     </div>
-
+    
     <div class="navbar align-items-end">
-        <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+        <ul class="navbar-nav">
             <li sec:authorize="!isAuthenticated()">
                 <a class="nav-item nav-link text-light" th:href="@{/login}">
                     Авторизация
